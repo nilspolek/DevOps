@@ -3,10 +3,23 @@ info:
   title: Chat Service API
   description: An API to manage group chats, direct messages, and message interactions.
   version: 1.0.0
+tags:
+  - name: Direct Messages
+    description: Operations related to direct messages
+  - name: Direct Message Reaction
+    description: Operations related to message reactions
+  - name: Group Messages
+    description: Operations related to messages
+  - name: Group Chat Reaction
+    description: Operations related to message reactions
+  - name: Group Chat
+    description: Operations related to group chats and messages
 
 paths:
   /chat/groups:
     get:
+      tags:
+        - Group Chat
       summary: Retrieve all accessible groups
       description: Fetches all groups that the authenticated user has access to.
       responses:
@@ -42,6 +55,8 @@ paths:
                     type: string
                     example: "Forbidden - Insufficient permissions"
     post:
+      tags:
+        - Group Chat
       summary: Create a new group
       description: Creates a new group with the provided title and list of members.
       requestBody:
@@ -60,7 +75,7 @@ paths:
                   items:
                     $ref: '#/components/schemas/ID'
                   description: List of member IDs to be added to the group.
-                  example: 
+                  example:
                     - "11111111-11111111-11111111-11111111"
                     - "22222222-22222222-22222222-22222222"
       responses:
@@ -90,9 +105,110 @@ paths:
                   message:
                     type: string
                     example: "Forbidden - Insufficient permissions"
+  /chat/groups/{groupId}:
+    patch:
+      tags:
+        - Group Chat
+      summary: Edit a Group Chat
+      description: Edit a Group chat by its ID.
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          description: The ID of the group which will be edited.
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        '200':
+          description: Group successfully edited from the group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        '400':
+          description: Bad request - Invalid Group ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid group ID."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
+        '404':
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Group or user not found."
+    delete:
+      tags:
+        - Group Chat
+      summary: Remove a Group Chat
+      description: Removes a Group chat by its ID.
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          description: The ID of the group from which the user will be removed.
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        '200':
+          description: Group successfully removed from the group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        '400':
+          description: Bad request - Invalid Group ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid group ID."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
+        '404':
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Group or user not found."
 
   /chat/groups/{groupId}/members:
     post:
+      tags:
+        - Group Chat
       summary: Add a user to a group
       description: Adds a user to the specified group by their user ID.
       parameters:
@@ -153,6 +269,8 @@ paths:
 
   /chat/groups/{groupId}/members/{userId}:
     delete:
+      tags:
+        - Group Chat
       summary: Remove a user from a group
       description: Removes a user from the specified group by their user ID.
       parameters:
@@ -207,6 +325,8 @@ paths:
                     example: "Group or user not found."
   /chat/groups/{groupId}/messages:
     get:
+      tags:
+        - Group Messages
       summary: Retrieve all messages from a group
       description: Fetches all messages from the specified group.
       parameters:
@@ -249,6 +369,8 @@ paths:
                     type: string
                     example: "Forbidden - Insufficient permissions"
     post:
+      tags:
+        - Group Messages
       summary: Send a message to a group
       description: Sends a message to the specified group.
       parameters:
@@ -306,8 +428,11 @@ paths:
                   message:
                     type: string
                     example: "Group not found."
-  /chat/messages/{messageId}/react:
+
+  /chat/groups/{groupId}/messages/{messageId}/react:
     post:
+      tags:
+        - Group Chat Reaction
       summary: Send a reaction to a message
       description: Sends a reaction to the specified message.
       parameters:
@@ -327,7 +452,7 @@ paths:
                 content:
                   type: string
                   description: The content of the message.
-                  example: "Hello team!"
+                  example: "☺"
       responses:
         '201':
           description: Message sent successfully
@@ -365,7 +490,58 @@ paths:
                   message:
                     type: string
                     example: "Group not found."
+    put:
+      tags:
+        - Group Chat Reaction
+      summary: Replace a reaction from a message
+      description: Replace a reaction from the specified message.
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          description: The message of the reaction.
+          schema:
+            $ref: '#/components/schemas/ID'
+        - name: groupUd
+          in: path
+          required: true
+          description: The group of the reaction.
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        '200':
+          description: Message reaction successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Message reaction edited successfully."
+        '404':
+          description: Reaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Reaction not found."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
     delete:
+      tags:
+        - Group Chat Reaction
       summary: Delete a reaction from a message
       description: Delete a reaction from the specified message.
       parameters:
@@ -373,6 +549,12 @@ paths:
           in: path
           required: true
           description: The message of the reaction.
+          schema:
+            $ref: '#/components/schemas/ID'
+        - name: groupUd
+          in: path
+          required: true
+          description: The group of the reaction.
           schema:
             $ref: '#/components/schemas/ID'
       responses:
@@ -406,9 +588,70 @@ paths:
                   message:
                     type: string
                     example: "Forbidden - Insufficient permissions"
-
   /chat/groups/{groupId}/messages/{messageId}:
+    put:
+      tags:
+        - Group Messages
+      summary: Replace a message from a group
+      description: Replaces a specific message from a group.
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          description: The ID of the group from which the message will be replaced.
+          schema:
+            $ref: '#/components/schemas/ID'
+        - name: messageId
+          in: path
+          required: true
+          description: The ID of the message to be replaced.
+          schema:
+            $ref: '#/components/schemas/ID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                    type: string
+                    description: The content of the message.
+                    example: "Hello team!"
+      responses:
+        '200':
+          description: Message successfully replaced
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Message replaced successfully."
+        '404':
+          description: Message or group not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Message or group not found."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
     delete:
+      tags:
+        - Group Messages
       summary: Delete a message from a group
       description: Deletes a specific message from a group.
       parameters:
@@ -455,7 +698,340 @@ paths:
                   message:
                     type: string
                     example: "Forbidden - Insufficient permissions"
-
+  /chat/users/{userId}/messages:
+    get:
+      tags:
+        - Direct Messages
+      summary: Retrieve all messages that are readable send from a user
+      description: Fetches all messages from the specified user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user to retrieve messages from.
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        '200':
+          description: Successfully retrieved the list of messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
+    post:
+      tags:
+        - Direct Messages
+      summary: Send a message to a user
+      description: Sends a message to the specified user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user to retrieve messages from.
+          schema:
+            $ref: '#/components/schemas/ID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: The content of the message.
+                  example: "Hello!"
+      responses:
+        '201':
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          description: Bad request - Invalid message content or user ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid message content."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+  /chat/users/{userId}/messages/{messageId}:
+    put:
+      tags:
+        - Direct Messages
+      summary: Replace a message from chat with a user
+      description: Replaces a specific message from a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user from which the message will be replaced.
+          schema:
+            $ref: '#/components/schemas/ID'
+        - name: messageId
+          in: path
+          required: true
+          description: The ID of the message to be replaced.
+          schema:
+            $ref: '#/components/schemas/ID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                    type: string
+                    description: The content of the message.
+                    example: "Hello team!"
+      responses:
+        '200':
+          description: Message successfully replaced
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Message replaced successfully."
+        '404':
+          description: Message or user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Message or user not found."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
+    delete:
+      tags:
+        - Direct Messages
+      summary: Delete a message from a Chat a user
+      description: Deletes a specific message from a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user from which the message will be deleted.
+          schema:
+            $ref: '#/components/schemas/ID'
+        - name: messageId
+          in: path
+          required: true
+          description: The ID of the message to be deleted.
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        '200':
+          description: Message successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Message deleted successfully."
+  /chat/users/{userId}/messages/{messageId}/react:
+    post:
+      tags:
+        - Direct Message Reaction
+      summary: Send a reaction to a message
+      description: Sends a reaction to the specified message.
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          description: The message of the reaction.
+          schema:
+            $ref: '#/components/schemas/ID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: The content of the message.
+                  example: "☺"
+      responses:
+        '201':
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          description: Bad request - Invalid message content or user ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid message content."
+        '401':
+          description: Unauthorized access - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden - Insufficient permissions"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+    put:
+      tags:
+        - Direct Message Reaction
+      summary: Replace a reaction from a message
+      description: Replace a reaction from the specified message.
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          description: The message of the reaction.
+          schema:
+            $ref: '#/components/schemas/ID'
+        - name: userId
+          in: path
+          required: true
+          description: The user of the reaction.
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        '200':
+          description: Message reaction successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Message reaction edited successfully."
+        '404':
+          description: Reaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Reaction not found."
+    delete:
+        tags:
+            - Direct Message Reaction
+        summary: Delete a reaction from a message
+        description: Delete a reaction from the specified message.
+        parameters:
+            - name: messageId
+              in: path
+              required: true
+              description: The message of the reaction.
+              schema:
+                $ref: '#/components/schemas/ID'
+            - name: userId
+              in: path
+              required: true
+              description: The user of the reaction.
+              schema:
+                $ref: '#/components/schemas/ID'
+        responses:
+            '200':
+              description: Message reaction successfully deleted
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Message reaction deleted successfully."
+            '404':
+              description: Reaction not found
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Reaction not found."
 components:
   securitySchemes:
     BearerAuth:
@@ -476,6 +1052,10 @@ components:
         title:
           type: string
           example: "Team Meetings"
+        image:
+          type: string
+          format: uri
+          example: "https://example.com/image.jpg"
         members:
           type: array
           items:
@@ -495,6 +1075,10 @@ components:
           type: string
           format: date-time
           example: "2024-11-25T10:00:00Z"
+        image:
+          type: string
+          format: uri
+          example: "https://example.com/image.jpg"
 
     Member:
       type: object
@@ -504,6 +1088,10 @@ components:
         name:
           type: string
           example: "Max"
+        image:
+            type: string
+            format: uri
+            example: "https://example.com/image.jpg"
 
 security:
-  - BearerAuth: []
+  - BearerAuth: [ ]
