@@ -17,16 +17,16 @@ type DirectMessageService interface {
 type ID uuid.UUID
 
 type Reaction struct {
-	Sender   ID
-	Reaction string
+	Sender   ID     `json:"sender"`
+	Reaction string `json:"reaction"`
 }
 
 type Message struct {
-	Id         ID
-	Content    string
-	SenderID   ID
-	ReceiverID ID
-	Timestamp  time.Time
-	ImageUrl   string
-	Reactions  []Reaction
+	Id         ID         `json:"id"`
+	Content    string     `json:"content"`
+	SenderID   ID         `json:"sender"`
+	ReceiverID ID         `json:"receiver"`
+	Timestamp  time.Time  `json:"timestamp"`
+	ImageUrl   string     `json:"image"`
+	Reactions  []Reaction `json:"reactions"`
 }

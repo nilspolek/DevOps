@@ -17,22 +17,22 @@ type GroupMessageService interface {
 type ID uuid.UUID
 
 type Message struct {
-	Id        ID
-	Content   string
-	Sender    Member
-	Timestamp time.Time
-	imageUrl  string
-	GroupId  ID
-	Reactions []Reaction
+	Id        ID         `json:"id"`
+	Content   string     `json:"content"`
+	Sender    Member     `json:"sender"`
+	Timestamp time.Time  `json:"timestamp"`
+	ImageUrl  string     `json:"image"`
+	GroupId   ID         `json:"group_id"`
+	Reactions []Reaction `json:"reactions"`
 }
 
 type Reaction struct {
-	Sender Member
-	Reaction string
+	Sender   Member `json:"sender"`
+	Reaction string `json:"reaction"`
 }
 
 type Member struct {
-	Id       ID
-	name     string
-	imageUrl string
+	Id       ID     `json:"id"`
+	Name     string `json:"name"`
+	ImageUrl string `json:"image"`
 }

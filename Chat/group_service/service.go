@@ -19,22 +19,22 @@ type GroupService interface {
 type ID uuid.UUID
 
 type Group struct {
-	Id       ID
-	Title    string
-	ImageUrl string
-	Members  []Member
+	Id       ID       `json:"id"`
+	Title    string   `json:"title"`
+	ImageUrl string   `json:"image"`
+	Members  []Member `json:"members"`
 }
 
 type Message struct {
-	Id        ID
-	Content   string
-	Sender    Member
-	Timestamp time.Time
-	imageUrl  string
+	Id        ID        `json:"id"`
+	Content   string    `json:"content"`
+	Sender    Member    `json:"sender"`
+	Timestamp time.Time `json:"timestamp"`
+	imageUrl  string    `json:"image"`
 }
 
 type Member struct {
-	Id       ID
-	name     string
-	imageUrl string
+	Id       ID     `json:"id"`
+	name     string `json:"name"`
+	imageUrl string `json:"image"`
 }
