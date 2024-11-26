@@ -9,7 +9,7 @@ import (
 type DirectMessageService interface {
 	// Returns all Messages that a readable for a user (userID)
 	GetMessages(userID ID) ([]Message, error)
-	SendMessage(fromID, toID ID, msg Message) error
+	SendMessage(msg Message) error
 	ReplaceMessage(messageID ID, msg Message) error
 	DeleteMessage(messageID ID) error
 }

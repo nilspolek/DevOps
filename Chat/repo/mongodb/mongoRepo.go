@@ -58,8 +58,14 @@ func (mr mongorepo) GetDirectMessages(userID messageservice.ID) ([]messageservic
 	var (
 		messages []messageservice.Message
 		ctx      = context.Background()
+		filter   = bson.M{
+			"$or": []bson.M{
+				{"senderid": userID},
+				{"receiverid": userID},
+			},
+		}
 	)
-	cursor, err := mr.DMCollection.Find(ctx, bson.M{"id": userID})
+	cursor, err := mr.DMCollection.Find(ctx, filter)
 	if err != nil {
 		return messages, err
 	}
@@ -74,12 +80,10 @@ func (mr mongorepo) GetDirectMessages(userID messageservice.ID) ([]messageservic
 	return messages, err
 }
 
-func (mr mongorepo) SendDirectMessage(fromID, toID messageservice.ID, msg messageservice.Message) error {
+func (mr mongorepo) SendDirectMessage(msg messageservice.Message) error {
 	var (
 		ctx = context.Background()
 	)
-	msg.SenderID = fromID
-	msg.ReceiverID = toID
 	_, err := mr.DMCollection.InsertOne(ctx, msg)
 	return err
 }
@@ -92,7 +96,7 @@ func (mr mongorepo) ReplaceDirecMessage(messageID messageservice.ID, msg message
 	return err
 }
 
-func (mr mongorepo) DeleteMessage(messageID messageservice.ID) error {
+func (mr mongorepo) DeleteDirectMessage(messageID messageservice.ID) error {
 	var (
 		ctx = context.Background()
 	)

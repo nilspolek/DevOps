@@ -11,9 +11,9 @@ type Repo interface {
 	// Direct Messages
 	//
 	GetDirectMessages(userID messageservice.ID) ([]messageservice.Message, error)
-	SendDirectMessage(fromID, toID messageservice.ID, msg messageservice.Message) error
+	SendDirectMessage(msg messageservice.Message) error
 	ReplaceDirecMessage(messageID messageservice.ID, msg messageservice.Message) error
-	DeleteMessage(messageservice.ID) error
+	DeleteDirectMessage(messageservice.ID) error
 
 	// Group Messages
 	//
