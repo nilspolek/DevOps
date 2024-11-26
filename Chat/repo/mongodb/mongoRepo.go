@@ -230,7 +230,7 @@ func (mr mongorepo) RemoveUserFromGroup(groupId, userID groupservice.ID) error {
 	return err
 }
 
-func (mr mongorepo) AddReactionToDM(messageID, userID reactionservice.ID, reaction messageservice.Reaction) error {
+func (mr mongorepo) AddReactionToDM(messageID reactionservice.ID, reaction messageservice.Reaction) error {
 	ctx := context.Background()
 
 	filter := bson.M{"id": messageID}
@@ -306,7 +306,7 @@ func (mr mongorepo) AddReactionToGroup(messageID, userID groupmessageservice.ID,
 	return err
 }
 
-func (mr mongorepo) ChangeReactionToGroup(messageID, reaction groupmessageservice.Reaction) error {
+func (mr mongorepo) ChangeReactionToGroup(messageID groupmessageservice.ID, reaction groupmessageservice.Reaction) error {
 	ctx := context.Background()
 	var err error
 	filter := bson.M{"id": messageID}

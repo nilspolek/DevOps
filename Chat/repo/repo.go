@@ -33,11 +33,11 @@ type Repo interface {
 
 	// Reactions
 	//
-	AddReactionToDM(messageID, userID reactionservice.ID, reaction messageservice.Reaction) error
+	AddReactionToDM(messageID reactionservice.ID, reaction messageservice.Reaction) error
 	ChangeReactionToDM(messageID, userID reactionservice.ID, reaction messageservice.Reaction) error
 	RemoveReactionFromDM(messageID, userID reactionservice.ID) error
 
 	AddReactionToGroup(messageID, userID groupmessageservice.ID, reaction groupmessageservice.Reaction) error
-	ChangeReactionToGroup(messageID, reaction groupmessageservice.Reaction) error
+	ChangeReactionToGroup(messageID groupmessageservice.ID, reaction groupmessageservice.Reaction) error
 	RemoveReactionFromGroup(messageID, userID groupmessageservice.ID) error
 }
