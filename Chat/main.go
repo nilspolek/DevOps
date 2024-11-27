@@ -20,6 +20,7 @@ import (
 	"github.com/nilspolek/DevOps/Chat/repo/mongodb"
 	"github.com/nilspolek/DevOps/Chat/transport/rest"
 	"github.com/nilspolek/goLog"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 const (
@@ -44,6 +45,7 @@ func main() {
 	gms := gmimpl.New(repositories)
 	gs := gimpl.New(repositories)
 	jwt := jwtimpl.New()
+	mux := mux.NewRouter()
 
 	// Enable logging if enabled
 	if ENABLE_LOG {
@@ -66,10 +68,11 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+		mux.Handle("/metrics", promhttp.Handler())
 	}
 
 	// Run the server
-	router := rest.New(mux.NewRouter(), &dms, &gms, &gs, &jwt)
+	router := rest.New(mux, &dms, &gms, &gs, &jwt)
 	if ENABLE_LOG {
 		goLog.Info("Server is running on address %s", address)
 	}
