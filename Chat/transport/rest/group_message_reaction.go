@@ -10,15 +10,19 @@ import (
 )
 
 // Swagger API Documentation
-// @Summary add a reaction to a message from a group
-// @Description add a reaction to a message from a group.
-// @Tags Group Message Reactions
-// @Accept  json
-// @Produce  json
-// @Param messageId path string true "messageId"
-// @Success 200 {object} string
-// @Failure 400 {object} string
-// @Router /group/message/{messageId}/reaction [post]
+//
+//	@Summary		add a reaction to a message from a group
+//	@Description	add a reaction to a message from a group.
+//	@Tags			Group Message Reactions
+//	@Accept			json
+//	@Produce		json
+//
+//	@Param			reaction	body		groupmessageservice.Reaction	true	"reaction"
+//
+//	@Param			messageId	path		string							true	"messageId"
+//	@Success		200			{object}	string
+//	@Failure		400			{object}	string
+//	@Router			/group/message/{messageId}/reaction [post]
 func (rest *Rest) addGroupMessageReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -47,15 +51,19 @@ func (rest *Rest) addGroupMessageReaction(w http.ResponseWriter, r *http.Request
 }
 
 // Swagger API Documentation
-// @Summary change a reaction to a message from a group
-// @Description change a reaction to a message from a group.
-// @Tags Group Message Reactions
-// @Accept  json
-// @Produce  json
-// @Param messageId path string true "messageId"
-// @Success 200 {object} string
-// @Failure 400 {object} string
-// @Router /group/message/{messageId}/reaction [put]
+//
+//	@Summary		change a reaction to a message from a group
+//	@Description	change a reaction to a message from a group.
+//	@Tags			Group Message Reactions
+//	@Accept			json
+//	@Produce		json
+//	@Param			messageId	path		string							true	"messageId"
+//
+//	@Param			reaction	body		groupmessageservice.Reaction	true	"reaction"
+//
+//	@Success		200			{object}	string
+//	@Failure		400			{object}	string
+//	@Router			/group/message/{messageId}/reaction [put]
 func (rest *Rest) changeGroupReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -85,15 +93,16 @@ func (rest *Rest) changeGroupReaction(w http.ResponseWriter, r *http.Request) {
 }
 
 // Swagger API Documentation
-// @Summary delete a reaction to a message from a group
-// @Description delete a reaction to a message from a group.
-// @Tags Group Message Reactions
-// @Accept  json
-// @Produce  json
-// @Param messageId path string true "messageId"
-// @Success 200 {object} string
-// @Failure 400 {object} string
-// @Router /group/message/{messageId}/reaction [delete]
+//
+//	@Summary		delete a reaction to a message from a group
+//	@Description	delete a reaction to a message from a group.
+//	@Tags			Group Message Reactions
+//	@Accept			json
+//	@Produce		json
+//	@Param			messageId	path		string	true	"messageId"
+//	@Success		200			{object}	string
+//	@Failure		400			{object}	string
+//	@Router			/group/message/{messageId}/reaction [delete]
 func (rest *Rest) deleteGroupReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 

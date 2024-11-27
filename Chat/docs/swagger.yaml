@@ -1,6 +1,92 @@
+definitions:
+  groupmessageservice.Member:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  groupmessageservice.Message:
+    properties:
+      content:
+        type: string
+      group_id:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      reactions:
+        items:
+          $ref: '#/definitions/groupmessageservice.Reaction'
+        type: array
+      sender:
+        $ref: '#/definitions/groupmessageservice.Member'
+      timestamp:
+        type: string
+    type: object
+  groupmessageservice.Reaction:
+    properties:
+      reaction:
+        type: string
+      sender:
+        $ref: '#/definitions/groupmessageservice.Member'
+    type: object
+  groupservice.Group:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      members:
+        items:
+          $ref: '#/definitions/groupservice.Member'
+        type: array
+      title:
+        type: string
+    type: object
+  groupservice.Member:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+    type: object
+  messageservice.Message:
+    properties:
+      content:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      reactions:
+        items:
+          $ref: '#/definitions/messageservice.Reaction'
+        type: array
+      receiver:
+        type: string
+      sender:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  messageservice.Reaction:
+    properties:
+      reaction:
+        type: string
+      sender:
+        type: string
+    type: object
 info:
   contact: {}
+  description: This is the API for the Chat microservice
   title: Chat API
+  version: "1"
 paths:
   /group/{groupId}/messages:
     delete:
@@ -32,6 +118,12 @@ paths:
       - application/json
       description: send a message to a group.
       parameters:
+      - description: message
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/groupmessageservice.Message'
       - description: groupId
         in: path
         name: groupId
@@ -86,6 +178,12 @@ paths:
       - application/json
       description: replace a message in a group.
       parameters:
+      - description: message
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/groupmessageservice.Message'
       - description: groupId
         in: path
         name: groupId
@@ -140,6 +238,12 @@ paths:
       - application/json
       description: add a reaction to a message from a group.
       parameters:
+      - description: reaction
+        in: body
+        name: reaction
+        required: true
+        schema:
+          $ref: '#/definitions/groupmessageservice.Reaction'
       - description: messageId
         in: path
         name: messageId
@@ -169,6 +273,12 @@ paths:
         name: messageId
         required: true
         type: string
+      - description: reaction
+        in: body
+        name: reaction
+        required: true
+        schema:
+          $ref: '#/definitions/groupmessageservice.Reaction'
       produces:
       - application/json
       responses:
@@ -206,6 +316,13 @@ paths:
       consumes:
       - application/json
       description: create a group.
+      parameters:
+      - description: Group
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/groupservice.Group'
       produces:
       - application/json
       responses:
@@ -250,6 +367,12 @@ paths:
       - application/json
       description: edit a Group.
       parameters:
+      - description: Group
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/groupservice.Group'
       - description: Group ID
         in: path
         name: groupId
@@ -342,6 +465,13 @@ paths:
       consumes:
       - application/json
       description: send a direct message to a user.
+      parameters:
+      - description: message
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/messageservice.Message'
       produces:
       - application/json
       responses:
@@ -386,6 +516,12 @@ paths:
       - application/json
       description: replace a direct message.
       parameters:
+      - description: message
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/messageservice.Message'
       - description: messageId
         in: path
         name: messageId
@@ -435,6 +571,12 @@ paths:
       - application/json
       description: adds a reaction to a direct message.
       parameters:
+      - description: reaction
+        in: body
+        name: reaction
+        required: true
+        schema:
+          $ref: '#/definitions/messageservice.Reaction'
       - description: The id of the message
         in: path
         name: messageId
@@ -459,6 +601,12 @@ paths:
       - application/json
       description: changes a reaction to a direct message.
       parameters:
+      - description: reaction
+        in: body
+        name: reaction
+        required: true
+        schema:
+          $ref: '#/definitions/messageservice.Reaction'
       - description: The id of the message
         in: path
         name: messageId
@@ -478,4 +626,9 @@ paths:
       summary: change a reaction to a direct message
       tags:
       - Direct Message Reaction
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

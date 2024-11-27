@@ -10,14 +10,15 @@ import (
 )
 
 // Swagger API Documentation
-// @Summary get all direct messages a user has access to
-// @Description get all direct messages a user has access to.
-// @Tags Direct Messages
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} string
-// @Failure 400 {object} string
-// @Router /messages [get]
+//
+//	@Summary		get all direct messages a user has access to
+//	@Description	get all direct messages a user has access to.
+//	@Tags			Direct Messages
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	string
+//	@Failure		400	{object}	string
+//	@Router			/messages [get]
 func (rest *Rest) getDirectMessages(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
@@ -33,14 +34,18 @@ func (rest *Rest) getDirectMessages(w http.ResponseWriter, r *http.Request) {
 }
 
 // Swagger API Documentation
-// @Summary send a direct message
-// @Description send a direct message to a user.
-// @Tags Direct Messages
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} string
-// @Failure 400 {object} string
-// @Router /messages [post]
+//
+//	@Summary		send a direct message
+//	@Description	send a direct message to a user.
+//	@Tags			Direct Messages
+//	@Accept			json
+//	@Produce		json
+//
+//	@Param			message	body		messageservice.Message	true	"message"
+//
+//	@Success		200		{object}	string
+//	@Failure		400		{object}	string
+//	@Router			/messages [post]
 func (rest *Rest) sendDirectMessage(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
@@ -61,15 +66,19 @@ func (rest *Rest) sendDirectMessage(w http.ResponseWriter, r *http.Request) {
 }
 
 // Swagger API Documentation
-// @Summary replace a direct message
-// @Description replace a direct message.
-// @Tags Direct Messages
-// @Accept  json
-// @Produce  json
-// @Param messageId path string true "messageId"
-// @Success 200 {object} string
-// @Failure 400 {object} string
-// @Router /messages/{messageId} [put]
+//
+//	@Summary		replace a direct message
+//	@Description	replace a direct message.
+//	@Tags			Direct Messages
+//	@Accept			json
+//	@Produce		json
+//
+//	@Param			message		body		messageservice.Message	true	"message"
+//
+//	@Param			messageId	path		string					true	"messageId"
+//	@Success		200			{object}	string
+//	@Failure		400			{object}	string
+//	@Router			/messages/{messageId} [put]
 func (rest *Rest) replaceDirectMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -97,15 +106,16 @@ func (rest *Rest) replaceDirectMessage(w http.ResponseWriter, r *http.Request) {
 }
 
 // Swagger API Documentation
-// @Summary delete a direct message
-// @Description delete a direct message.
-// @Tags Direct Messages
-// @Accept  json
-// @Produce  json
-// @Param messageId path string true "messageId"
-// @Success 200 {object} string
-// @Failure 400 {object} string
-// @Router /messages/{messageId} [delete]
+//
+//	@Summary		delete a direct message
+//	@Description	delete a direct message.
+//	@Tags			Direct Messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			messageId	path		string	true	"messageId"
+//	@Success		200			{object}	string
+//	@Failure		400			{object}	string
+//	@Router			/messages/{messageId} [delete]
 func (rest *Rest) deleteDirectMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 

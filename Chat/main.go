@@ -32,7 +32,12 @@ const (
 	ENABLE_SWAGGER    = true
 )
 
-// @title Chat API
+//	@title						Chat API
+//	@version					1
+//	@description				This is the API for the Chat microservice
+//	@SecurityDefinitions.apikey	BearerAuth
+//	@in							header
+//	@name						Authorization
 //
 //go:generate swag init
 func main() {

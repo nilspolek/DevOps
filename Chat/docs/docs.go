@@ -35,6 +35,15 @@ const docTemplate = `{
                         "name": "messageId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "reaction",
+                        "name": "reaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/groupmessageservice.Reaction"
+                        }
                     }
                 ],
                 "responses": {
@@ -65,6 +74,15 @@ const docTemplate = `{
                 ],
                 "summary": "add a reaction to a message from a group",
                 "parameters": [
+                    {
+                        "description": "reaction",
+                        "name": "reaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/groupmessageservice.Reaction"
+                        }
+                    },
                     {
                         "type": "string",
                         "description": "messageId",
@@ -140,6 +158,15 @@ const docTemplate = `{
                 "summary": "send a message to a group",
                 "parameters": [
                     {
+                        "description": "message",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/groupmessageservice.Message"
+                        }
+                    },
+                    {
                         "type": "string",
                         "description": "groupId",
                         "name": "groupId",
@@ -213,6 +240,15 @@ const docTemplate = `{
                 ],
                 "summary": "replace a message in a group",
                 "parameters": [
+                    {
+                        "description": "message",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/groupmessageservice.Message"
+                        }
+                    },
                     {
                         "type": "string",
                         "description": "groupId",
@@ -327,6 +363,17 @@ const docTemplate = `{
                     "Groups"
                 ],
                 "summary": "create a group",
+                "parameters": [
+                    {
+                        "description": "Group",
+                        "name": "group",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/groupservice.Group"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -393,6 +440,15 @@ const docTemplate = `{
                 ],
                 "summary": "edit a Group",
                 "parameters": [
+                    {
+                        "description": "Group",
+                        "name": "group",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/groupservice.Group"
+                        }
+                    },
                     {
                         "type": "string",
                         "description": "Group ID",
@@ -533,6 +589,17 @@ const docTemplate = `{
                     "Direct Messages"
                 ],
                 "summary": "send a direct message",
+                "parameters": [
+                    {
+                        "description": "message",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/messageservice.Message"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -563,6 +630,15 @@ const docTemplate = `{
                 ],
                 "summary": "replace a direct message",
                 "parameters": [
+                    {
+                        "description": "message",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/messageservice.Message"
+                        }
+                    },
                     {
                         "type": "string",
                         "description": "messageId",
@@ -638,6 +714,15 @@ const docTemplate = `{
                 "summary": "adds a reaction to a direct message",
                 "parameters": [
                     {
+                        "description": "reaction",
+                        "name": "reaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/messageservice.Reaction"
+                        }
+                    },
+                    {
                         "type": "string",
                         "description": "The id of the message",
                         "name": "messageId",
@@ -673,6 +758,15 @@ const docTemplate = `{
                 ],
                 "summary": "change a reaction to a direct message",
                 "parameters": [
+                    {
+                        "description": "reaction",
+                        "name": "reaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/messageservice.Reaction"
+                        }
+                    },
                     {
                         "type": "string",
                         "description": "The id of the message",
@@ -733,17 +827,154 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "definitions": {
+        "groupmessageservice.Member": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "groupmessageservice.Message": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "group_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "reactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/groupmessageservice.Reaction"
+                    }
+                },
+                "sender": {
+                    "$ref": "#/definitions/groupmessageservice.Member"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "groupmessageservice.Reaction": {
+            "type": "object",
+            "properties": {
+                "reaction": {
+                    "type": "string"
+                },
+                "sender": {
+                    "$ref": "#/definitions/groupmessageservice.Member"
+                }
+            }
+        },
+        "groupservice.Group": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/groupservice.Member"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "groupservice.Member": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "messageservice.Message": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "reactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/messageservice.Reaction"
+                    }
+                },
+                "receiver": {
+                    "type": "string"
+                },
+                "sender": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "messageservice.Reaction": {
+            "type": "object",
+            "properties": {
+                "reaction": {
+                    "type": "string"
+                },
+                "sender": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Chat API",
-	Description:      "",
+	Description:      "This is the API for the Chat microservice",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
