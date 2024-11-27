@@ -1,0 +1,481 @@
+info:
+  contact: {}
+  title: Chat API
+paths:
+  /group/{groupId}/messages:
+    delete:
+      consumes:
+      - application/json
+      description: get all messages from a group.
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: get all messages from a group
+      tags:
+      - Group Messages
+    post:
+      consumes:
+      - application/json
+      description: send a message to a group.
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: send a message to a group
+      tags:
+      - Group Messages
+  /group/{groupId}/messages/{messageId}:
+    delete:
+      consumes:
+      - application/json
+      description: replace a message in a group.
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        type: string
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: replace a message in a group
+      tags:
+      - Group Messages
+    put:
+      consumes:
+      - application/json
+      description: replace a message in a group.
+      parameters:
+      - description: groupId
+        in: path
+        name: groupId
+        required: true
+        type: string
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: replace a message in a group
+      tags:
+      - Group Messages
+  /group/message/{messageId}/reaction:
+    delete:
+      consumes:
+      - application/json
+      description: delete a reaction to a message from a group.
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: delete a reaction to a message from a group
+      tags:
+      - Group Message Reactions
+    post:
+      consumes:
+      - application/json
+      description: add a reaction to a message from a group.
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: add a reaction to a message from a group
+      tags:
+      - Group Message Reactions
+    put:
+      consumes:
+      - application/json
+      description: change a reaction to a message from a group.
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: change a reaction to a message from a group
+      tags:
+      - Group Message Reactions
+  /groups:
+    get:
+      consumes:
+      - application/json
+      description: get all groups a user can access.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: get all groups a user can access
+      tags:
+      - Groups
+    post:
+      consumes:
+      - application/json
+      description: create a group.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: create a group
+      tags:
+      - Groups
+  /groups/{groupId}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a Group.
+      parameters:
+      - description: Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: delete a Group
+      tags:
+      - Groups
+    patch:
+      consumes:
+      - application/json
+      description: edit a Group.
+      parameters:
+      - description: Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: edit a Group
+      tags:
+      - Groups
+  /groups/{groupId}/users:
+    post:
+      consumes:
+      - application/json
+      description: add a user to a Group.
+      parameters:
+      - description: Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: add a user to a Group
+      tags:
+      - Groups
+  /groups/{groupId}/users/{userId}:
+    delete:
+      consumes:
+      - application/json
+      description: remove a user from a Group.
+      parameters:
+      - description: Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: remove a user from a Group
+      tags:
+      - Groups
+  /messages:
+    get:
+      consumes:
+      - application/json
+      description: get all direct messages a user has access to.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: get all direct messages a user has access to
+      tags:
+      - Direct Messages
+    post:
+      consumes:
+      - application/json
+      description: send a direct message to a user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: send a direct message
+      tags:
+      - Direct Messages
+  /messages/{messageId}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a direct message.
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: delete a direct message
+      tags:
+      - Direct Messages
+    put:
+      consumes:
+      - application/json
+      description: replace a direct message.
+      parameters:
+      - description: messageId
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: replace a direct message
+      tags:
+      - Direct Messages
+  /messages/{messageId}/react:
+    delete:
+      consumes:
+      - application/json
+      description: delete a reaction to a direct message.
+      parameters:
+      - description: The id of the message
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: delete a reaction to a direct message
+      tags:
+      - Direct Message Reaction
+    get:
+      consumes:
+      - application/json
+      description: adds a reaction to a direct message.
+      parameters:
+      - description: The id of the message
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: adds a reaction to a direct message
+      tags:
+      - Direct Message Reaction
+    put:
+      consumes:
+      - application/json
+      description: changes a reaction to a direct message.
+      parameters:
+      - description: The id of the message
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: change a reaction to a direct message
+      tags:
+      - Direct Message Reaction
+swagger: "2.0"

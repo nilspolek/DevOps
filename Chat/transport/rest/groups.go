@@ -9,6 +9,15 @@ import (
 	groupservice "github.com/nilspolek/DevOps/Chat/group_service"
 )
 
+// Swagger API Documentation
+// @Summary get all groups a user can access
+// @Description get all groups a user can access.
+// @Tags Groups
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Router /groups [get]
 func (rest *Rest) getGroups(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
@@ -24,6 +33,15 @@ func (rest *Rest) getGroups(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(groups)
 }
 
+// Swagger API Documentation
+// @Summary create a group
+// @Description create a group.
+// @Tags Groups
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Router /groups [post]
 func (rest *Rest) createGroup(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
@@ -46,6 +64,16 @@ func (rest *Rest) createGroup(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(groupId)
 }
 
+// Swagger API Documentation
+// @Summary edit a Group
+// @Description edit a Group.
+// @Tags Groups
+// @Accept  json
+// @Produce  json
+// @Param groupId path string true "Group ID"
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Router /groups/{groupId} [patch]
 func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -71,6 +99,16 @@ func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Swagger API Documentation
+// @Summary delete a Group
+// @Description delete a Group.
+// @Tags Groups
+// @Accept  json
+// @Produce  json
+// @Param groupId path string true "Group ID"
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Router /groups/{groupId} [delete]
 func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -90,6 +128,16 @@ func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Swagger API Documentation
+// @Summary add a user to a Group
+// @Description add a user to a Group.
+// @Tags Groups
+// @Accept  json
+// @Produce  json
+// @Param groupId path string true "Group ID"
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Router /groups/{groupId}/users [post]
 func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -113,6 +161,16 @@ func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Swagger API Documentation
+// @Summary remove a user from a Group
+// @Description remove a user from a Group.
+// @Tags Groups
+// @Accept  json
+// @Produce  json
+// @Param groupId path string true "Group ID"
+// @Success 200 {object} string
+// @Failure 400 {object} string
+// @Router /groups/{groupId}/users/{userId} [delete]
 func (rest *Rest) removeUserFromGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := uuid.Parse(r.Header.Get("userId"))

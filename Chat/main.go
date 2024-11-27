@@ -10,6 +10,7 @@ import (
 	"github.com/nilspolek/DevOps/Chat/direct_message_service/dm_impl"
 	dmlog "github.com/nilspolek/DevOps/Chat/direct_message_service/dm_log"
 	dmprometheus "github.com/nilspolek/DevOps/Chat/direct_message_service/dm_prometheus"
+	_ "github.com/nilspolek/DevOps/Chat/docs"
 	gmimpl "github.com/nilspolek/DevOps/Chat/group_message_service/gm_impl"
 	gmlog "github.com/nilspolek/DevOps/Chat/group_message_service/gm_log"
 	gmprometheus "github.com/nilspolek/DevOps/Chat/group_message_service/gm_prometheus"
@@ -21,14 +22,19 @@ import (
 	"github.com/nilspolek/DevOps/Chat/transport/rest"
 	"github.com/nilspolek/goLog"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 const (
 	DEFAULT_PORT      = 8080
 	ENABLE_LOG        = true
 	ENABLE_PROMETHEUS = false
+	ENABLE_SWAGGER    = true
 )
 
+// @title Chat API
+//
+//go:generate swag init
 func main() {
 	// Assinging the address to the environment variable CHAT_ADDRESS
 	var address string
@@ -76,5 +82,12 @@ func main() {
 	if ENABLE_LOG {
 		goLog.Info("Server is running on address %s", address)
 	}
+
+	// Run swagger if enabled
+	if ENABLE_SWAGGER {
+		// generate swagger documentation
+		mux.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+	}
+
 	goLog.Error("%v", http.ListenAndServe(address, router.Router))
 }

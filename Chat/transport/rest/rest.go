@@ -46,10 +46,10 @@ func (r *Rest) RegisterRoutes() {
 
 	// Group Messages
 	//
-	r.Router.HandleFunc("/group/messages", r.jwtMiddleware(r.getGroupMessages)).Methods("GET")
-	r.Router.HandleFunc("/group/messages", r.jwtMiddleware(r.sendGroupMessage)).Methods("POST")
-	r.Router.HandleFunc("/group/messages/{messageId}", r.jwtMiddleware(r.replaceGroupMessage)).Methods("PUT")
-	r.Router.HandleFunc("/group/messages/{messageId}", r.jwtMiddleware(r.deleteGroupMessage)).Methods("DELETE")
+	r.Router.HandleFunc("/group/{groupId}/messages", r.jwtMiddleware(r.getGroupMessages)).Methods("GET")
+	r.Router.HandleFunc("/group/{groupId}/messages", r.jwtMiddleware(r.sendGroupMessage)).Methods("POST")
+	r.Router.HandleFunc("/group/{groupId}/messages/{messageId}", r.jwtMiddleware(r.replaceGroupMessage)).Methods("PUT")
+	r.Router.HandleFunc("/group/{groupId}/messages/{messageId}", r.jwtMiddleware(r.deleteGroupMessage)).Methods("DELETE")
 
 	// Group Message Reaction
 	//
