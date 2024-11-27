@@ -10,8 +10,7 @@ import (
 )
 
 func (rest *Rest) getGroups(w http.ResponseWriter, r *http.Request) {
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -26,8 +25,7 @@ func (rest *Rest) getGroups(w http.ResponseWriter, r *http.Request) {
 }
 
 func (rest *Rest) createGroup(w http.ResponseWriter, r *http.Request) {
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -51,8 +49,7 @@ func (rest *Rest) createGroup(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -77,8 +74,7 @@ func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -97,8 +93,7 @@ func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -120,8 +115,7 @@ func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 
 func (rest *Rest) removeUserFromGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)

@@ -12,8 +12,7 @@ import (
 func (rest *Rest) addDirectMessageReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -39,8 +38,7 @@ func (rest *Rest) addDirectMessageReaction(w http.ResponseWriter, r *http.Reques
 func (rest *Rest) changeDirectMessageReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -66,8 +64,7 @@ func (rest *Rest) changeDirectMessageReaction(w http.ResponseWriter, r *http.Req
 func (rest *Rest) deleteDirectMessageReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}

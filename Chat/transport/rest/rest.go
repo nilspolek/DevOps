@@ -33,36 +33,36 @@ func New(router *mux.Router, dms *messageservice.DirectMessageService, gms *grou
 func (r *Rest) RegisterRoutes() {
 	// Direct Messages
 	//
-	r.Router.HandleFunc("/messages", r.getDirectMessages).Methods("GET")
-	r.Router.HandleFunc("/messages", r.sendDirectMessage).Methods("POST")
-	r.Router.HandleFunc("/messages/{messageId}", r.replaceDirectMessage).Methods("PUT")
-	r.Router.HandleFunc("/messages/{messageId}", r.deleteDirectMessage).Methods("DELETE")
+	r.Router.HandleFunc("/messages", r.jwtMiddleware(r.getDirectMessages)).Methods("GET")
+	r.Router.HandleFunc("/messages", r.jwtMiddleware(r.sendDirectMessage)).Methods("POST")
+	r.Router.HandleFunc("/messages/{messageId}", r.jwtMiddleware(r.replaceDirectMessage)).Methods("PUT")
+	r.Router.HandleFunc("/messages/{messageId}", r.jwtMiddleware(r.deleteDirectMessage)).Methods("DELETE")
 
 	// Direct Message Reaction
 	//
-	r.Router.HandleFunc("/messages/{messageId}/react", r.addDirectMessageReaction).Methods("POST")
-	r.Router.HandleFunc("/messages/{messageId}/react", r.changeDirectMessageReaction).Methods("PUT")
-	r.Router.HandleFunc("/messages/{messageId}/react", r.deleteDirectMessageReaction).Methods("DELETE")
+	r.Router.HandleFunc("/messages/{messageId}/react", r.jwtMiddleware(r.addDirectMessageReaction)).Methods("POST")
+	r.Router.HandleFunc("/messages/{messageId}/react", r.jwtMiddleware(r.changeDirectMessageReaction)).Methods("PUT")
+	r.Router.HandleFunc("/messages/{messageId}/react", r.jwtMiddleware(r.deleteDirectMessageReaction)).Methods("DELETE")
 
 	// Group Messages
 	//
-	r.Router.HandleFunc("/group/messages", r.getGroupMessages).Methods("GET")
-	r.Router.HandleFunc("/group/messages", r.sendGroupMessage).Methods("POST")
-	r.Router.HandleFunc("/group/messages/{messageId}", r.replaceGroupMessage).Methods("PUT")
-	r.Router.HandleFunc("/group/messages/{messageId}", r.deleteGroupMessage).Methods("DELETE")
+	r.Router.HandleFunc("/group/messages", r.jwtMiddleware(r.getGroupMessages)).Methods("GET")
+	r.Router.HandleFunc("/group/messages", r.jwtMiddleware(r.sendGroupMessage)).Methods("POST")
+	r.Router.HandleFunc("/group/messages/{messageId}", r.jwtMiddleware(r.replaceGroupMessage)).Methods("PUT")
+	r.Router.HandleFunc("/group/messages/{messageId}", r.jwtMiddleware(r.deleteGroupMessage)).Methods("DELETE")
 
 	// Group Message Reaction
 	//
-	r.Router.HandleFunc("/group/message/{messageId}/reaction", r.addGroupMessageReaction).Methods("POST")
-	r.Router.HandleFunc("/group/message/{messageId}/reaction", r.changeGroupReaction).Methods("PUT")
-	r.Router.HandleFunc("/group/message/{messageId}/reaction", r.deleteGroupReaction).Methods("DELETE")
+	r.Router.HandleFunc("/group/message/{messageId}/reaction", r.jwtMiddleware(r.addGroupMessageReaction)).Methods("POST")
+	r.Router.HandleFunc("/group/message/{messageId}/reaction", r.jwtMiddleware(r.changeGroupReaction)).Methods("PUT")
+	r.Router.HandleFunc("/group/message/{messageId}/reaction", r.jwtMiddleware(r.deleteGroupReaction)).Methods("DELETE")
 
 	// Groups
 	//
-	r.Router.HandleFunc("/groups", r.getGroups).Methods("GET")
-	r.Router.HandleFunc("/groups", r.createGroup).Methods("POST")
-	r.Router.HandleFunc("/groups/{groupId}", r.editGroup).Methods("PUT")
-	r.Router.HandleFunc("/groups/{groupId}", r.deleteGroup).Methods("DELETE")
-	r.Router.HandleFunc("/groups/{groupId}/users", r.addUserToGroup).Methods("POST")
-	r.Router.HandleFunc("/groups/{groupId}/users/{userId}", r.removeUserFromGroup).Methods("DELETE")
+	r.Router.HandleFunc("/groups", r.jwtMiddleware(r.getGroups)).Methods("GET")
+	r.Router.HandleFunc("/groups", r.jwtMiddleware(r.createGroup)).Methods("POST")
+	r.Router.HandleFunc("/groups/{groupId}", r.jwtMiddleware(r.editGroup)).Methods("PUT")
+	r.Router.HandleFunc("/groups/{groupId}", r.jwtMiddleware(r.deleteGroup)).Methods("DELETE")
+	r.Router.HandleFunc("/groups/{groupId}/users", r.jwtMiddleware(r.addUserToGroup)).Methods("POST")
+	r.Router.HandleFunc("/groups/{groupId}/users/{userId}", r.jwtMiddleware(r.removeUserFromGroup)).Methods("DELETE")
 }

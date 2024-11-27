@@ -9,7 +9,6 @@ type svc struct {
 }
 
 func New() jwtservice.JWTService {
-
 	return &svc{}
 }
 

@@ -10,8 +10,7 @@ import (
 )
 
 func (rest *Rest) getDirectMessages(w http.ResponseWriter, r *http.Request) {
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -25,8 +24,7 @@ func (rest *Rest) getDirectMessages(w http.ResponseWriter, r *http.Request) {
 }
 
 func (rest *Rest) sendDirectMessage(w http.ResponseWriter, r *http.Request) {
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -47,8 +45,7 @@ func (rest *Rest) sendDirectMessage(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) replaceDirectMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -73,8 +70,7 @@ func (rest *Rest) replaceDirectMessage(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) deleteDirectMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}

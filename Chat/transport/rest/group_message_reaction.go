@@ -12,8 +12,7 @@ import (
 func (rest *Rest) addGroupMessageReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -40,8 +39,7 @@ func (rest *Rest) addGroupMessageReaction(w http.ResponseWriter, r *http.Request
 func (rest *Rest) changeGroupReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -69,8 +67,7 @@ func (rest *Rest) changeGroupReaction(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) deleteGroupReaction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	id, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}

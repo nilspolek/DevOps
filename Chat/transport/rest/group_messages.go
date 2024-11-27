@@ -12,8 +12,7 @@ import (
 func (rest *Rest) getGroupMessages(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -32,8 +31,7 @@ func (rest *Rest) getGroupMessages(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) sendGroupMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -55,8 +53,7 @@ func (rest *Rest) sendGroupMessage(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) replaceGroupMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -78,8 +75,7 @@ func (rest *Rest) replaceGroupMessage(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) deleteGroupMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	authHeader := r.Header.Get("Authorization")
-	_, err := (*(*rest).jwt).ValiadteToken(authHeader)
+	_, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
