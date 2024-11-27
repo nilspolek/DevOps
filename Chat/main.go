@@ -111,5 +111,6 @@ func main() {
 		mux.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 	}
 
+	// Run the server
 	goLog.Error("%v", http.ListenAndServe(address, router.Router))
 }

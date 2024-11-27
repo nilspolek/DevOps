@@ -15,3 +15,4 @@ possable variables
 - `ENABLE_LOG` - enable logging (default: `true`)
 - `ENABLE_PROMETHEUS` - enable prometheus metrics (default: `false`)
 - `ENABLE_SWAGGER` - enable swagger (default: `false`)
+- `MONGO_URI` - mongo uri (default: `mongodb://localhost:27017`)
