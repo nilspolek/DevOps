@@ -12,7 +12,7 @@ import (
 func (rest *Rest) getGroupMessages(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -20,7 +20,7 @@ func (rest *Rest) getGroupMessages(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	gMessages, err := (*(*rest).gms).GetMessages(gId)
+	gMessages, err := (*(*rest).gms).GetMessages(gId, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -31,7 +31,7 @@ func (rest *Rest) getGroupMessages(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) sendGroupMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -44,7 +44,7 @@ func (rest *Rest) sendGroupMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gms).SendMessage(gId, gMessage)
+	err = (*(*rest).gms).SendMessage(gId, gMessage, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -53,7 +53,7 @@ func (rest *Rest) sendGroupMessage(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) replaceGroupMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -66,7 +66,7 @@ func (rest *Rest) replaceGroupMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gms).ReplaceMessage(gId, gMessage)
+	err = (*(*rest).gms).ReplaceMessage(gId, gMessage, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -75,7 +75,7 @@ func (rest *Rest) replaceGroupMessage(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) deleteGroupMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -87,7 +87,7 @@ func (rest *Rest) deleteGroupMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gms).DeleteMessage(mId)
+	err = (*(*rest).gms).DeleteMessage(mId, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

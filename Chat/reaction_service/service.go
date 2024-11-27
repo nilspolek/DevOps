@@ -7,11 +7,11 @@ import (
 )
 
 type ReactionService interface {
-	AddReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction) error
-	ChangeReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction) error
-	RemoveReactionFromDM(messageID, userID uuid.UUID) error
+	AddReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction, authUser uuid.UUID) error
+	ChangeReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction, authUser uuid.UUID) error
+	RemoveReactionFromDM(messageID, userID, authUser uuid.UUID) error
 
-	AddReactionToGroup(messageID, userId uuid.UUID, reaction groupmessageservice.Reaction) error
-	ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessageservice.Reaction) error
-	RemoveReactionFromGroup(messageID, userID uuid.UUID) error
+	AddReactionToGroup(messageID, userId uuid.UUID, reaction groupmessageservice.Reaction, authUser uuid.UUID) error
+	ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessageservice.Reaction, authUser uuid.UUID) error
+	RemoveReactionFromGroup(messageID, userID, authUser uuid.UUID) error
 }

@@ -44,46 +44,46 @@ func New(next groupmessageservice.GroupMessageService, prefix string) (groupmess
 	return svc, err
 }
 
-func (s svc) GetMessages(groupID uuid.UUID) (msgs []groupmessageservice.Message, err error) {
+func (s svc) GetMessages(groupID, authUser uuid.UUID) (msgs []groupmessageservice.Message, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.getMessageCounter.Inc()
-	msgs, err = s.next.GetMessages(groupID)
+	msgs, err = s.next.GetMessages(groupID, authUser)
 	return
 }
 
-func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message) (err error) {
+func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.sendMessageCounter.Inc()
-	err = s.next.SendMessage(groupID, msg)
+	err = s.next.SendMessage(groupID, msg, authUser)
 	return
 }
 
-func (s svc) ReplaceMessage(messageID uuid.UUID, msg groupmessageservice.Message) (err error) {
+func (s svc) ReplaceMessage(messageID uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.replaceMessageCounter.Inc()
-	err = s.next.ReplaceMessage(messageID, msg)
+	err = s.next.ReplaceMessage(messageID, msg, authUser)
 	return
 }
 
-func (s svc) DeleteMessage(messageID uuid.UUID) (err error) {
+func (s svc) DeleteMessage(messageID, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.deleteMessageCounter.Inc()
-	err = s.next.DeleteMessage(messageID)
+	err = s.next.DeleteMessage(messageID, authUser)
 	return
 }

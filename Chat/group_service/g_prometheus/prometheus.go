@@ -55,68 +55,68 @@ func New(next groupservice.GroupService, prefic string) (groupservice.GroupServi
 	return &svc, prometheus.Register(svc.errorCounter)
 }
 
-func (s svc) GetAllGroups(userId uuid.UUID) (gps []groupservice.Group, err error) {
+func (s svc) GetAllGroups(userId, authUser uuid.UUID) (gps []groupservice.Group, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.getAllGroupsCounter.Inc()
-	gps, err = s.next.GetAllGroups(userId)
+	gps, err = s.next.GetAllGroups(userId, authUser)
 	return
 }
 
-func (s svc) CreateGroup(group groupservice.Group) (id uuid.UUID, err error) {
+func (s svc) CreateGroup(group groupservice.Group, authUser uuid.UUID) (id uuid.UUID, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.createGroupCounter.Inc()
-	id, err = s.next.CreateGroup(group)
+	id, err = s.next.CreateGroup(group, authUser)
 	return
 }
 
-func (s svc) EditGroup(group groupservice.Group, id uuid.UUID) (err error) {
+func (s svc) EditGroup(group groupservice.Group, id, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.editGroupCounter.Inc()
-	err = s.next.EditGroup(group, id)
+	err = s.next.EditGroup(group, id, authUser)
 	return
 }
 
-func (s svc) DeleteGroup(id uuid.UUID) (err error) {
+func (s svc) DeleteGroup(id, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.deleteGroupCounter.Inc()
-	err = s.next.DeleteGroup(id)
+	err = s.next.DeleteGroup(id, authUser)
 	return
 }
 
-func (s svc) AddUserToGroup(groupId, userId uuid.UUID) (err error) {
+func (s svc) AddUserToGroup(groupId, userId, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.addUserCounter.Inc()
-	err = s.next.AddUserToGroup(groupId, userId)
+	err = s.next.AddUserToGroup(groupId, userId, authUser)
 	return
 }
 
-func (s svc) RemoveUserFromGroup(groupId, userId uuid.UUID) (err error) {
+func (s svc) RemoveUserFromGroup(groupId, userId, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.removeUserCounter.Inc()
-	err = s.next.RemoveUserFromGroup(groupId, userId)
+	err = s.next.RemoveUserFromGroup(groupId, userId, authUser)
 	return
 }

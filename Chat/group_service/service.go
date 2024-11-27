@@ -8,12 +8,12 @@ import (
 
 type GroupService interface {
 	// Returns all Groups an user has access to
-	GetAllGroups(userID uuid.UUID) ([]Group, error)
-	CreateGroup(group Group) (uuid.UUID, error)
-	EditGroup(group Group, id uuid.UUID) error
-	DeleteGroup(id uuid.UUID) error
-	AddUserToGroup(groupId, userId uuid.UUID) error
-	RemoveUserFromGroup(groupId, userId uuid.UUID) error
+	GetAllGroups(userID, authUser uuid.UUID) ([]Group, error)
+	CreateGroup(group Group, authUser uuid.UUID) (uuid.UUID, error)
+	EditGroup(group Group, id, authUser uuid.UUID) error
+	DeleteGroup(id, authUser uuid.UUID) error
+	AddUserToGroup(groupId, userId, authUser uuid.UUID) error
+	RemoveUserFromGroup(groupId, userId, authUser uuid.UUID) error
 }
 
 type Group struct {

@@ -8,10 +8,10 @@ import (
 
 type DirectMessageService interface {
 	// Returns all Messages that a readable for a user (userID)
-	GetMessages(userID uuid.UUID) ([]Message, error)
-	SendMessage(msg Message) error
-	ReplaceMessage(messageID uuid.UUID, msg Message) error
-	DeleteMessage(messageID uuid.UUID) error
+	GetMessages(userID, authUser uuid.UUID) ([]Message, error)
+	SendMessage(msg Message, authUser uuid.UUID) error
+	ReplaceMessage(messageID uuid.UUID, msg Message, authUser uuid.UUID) error
+	DeleteMessage(messageID uuid.UUID, authUser uuid.UUID) error
 }
 
 type Reaction struct {

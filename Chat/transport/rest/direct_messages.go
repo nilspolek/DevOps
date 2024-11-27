@@ -14,7 +14,7 @@ func (rest *Rest) getDirectMessages(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
-	messages, err := (*(*rest).dms).GetMessages(id)
+	messages, err := (*(*rest).dms).GetMessages(id, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -36,7 +36,7 @@ func (rest *Rest) sendDirectMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	message.SenderID = id
-	err = (*(*rest).dms).SendMessage(message)
+	err = (*(*rest).dms).SendMessage(message, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -62,7 +62,7 @@ func (rest *Rest) replaceDirectMessage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).dms).ReplaceMessage(messageId, message)
+	err = (*(*rest).dms).ReplaceMessage(messageId, message, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -70,7 +70,7 @@ func (rest *Rest) replaceDirectMessage(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) deleteDirectMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 	}
@@ -80,7 +80,7 @@ func (rest *Rest) deleteDirectMessage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).dms).DeleteMessage(messageId)
+	err = (*(*rest).dms).DeleteMessage(messageId, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

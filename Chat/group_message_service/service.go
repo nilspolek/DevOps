@@ -8,10 +8,10 @@ import (
 
 type GroupMessageService interface {
 	// Returns all messages from a Group
-	GetMessages(groupID uuid.UUID) ([]Message, error)
-	SendMessage(groupID uuid.UUID, msg Message) error
-	ReplaceMessage(messageID uuid.UUID, msg Message) error
-	DeleteMessage(messageID uuid.UUID) error
+	GetMessages(groupID, authUser uuid.UUID) ([]Message, error)
+	SendMessage(groupID uuid.UUID, msg Message, authUser uuid.UUID) error
+	ReplaceMessage(messageID uuid.UUID, msg Message, authUser uuid.UUID) error
+	DeleteMessage(messageID, authUser uuid.UUID) error
 }
 
 type Message struct {

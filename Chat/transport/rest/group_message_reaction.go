@@ -30,7 +30,7 @@ func (rest *Rest) addGroupMessageReaction(w http.ResponseWriter, r *http.Request
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).AddReactionToGroup(messageId, id, reaction)
+	err = (*(*rest).rs).AddReactionToGroup(messageId, id, reaction, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -58,7 +58,7 @@ func (rest *Rest) changeGroupReaction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).ChangeReactionToGroup(messageId, reaction)
+	err = (*(*rest).rs).ChangeReactionToGroup(messageId, reaction, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -77,7 +77,7 @@ func (rest *Rest) deleteGroupReaction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).RemoveReactionFromGroup(messageId, id)
+	err = (*(*rest).rs).RemoveReactionFromGroup(messageId, id, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

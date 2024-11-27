@@ -76,68 +76,68 @@ func New(next reactionservice.ReactionService, prefix string) (reactionservice.R
 	return &svc, err
 }
 
-func (s *svc) AddReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction) (err error) {
+func (s *svc) AddReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.AddReactionToDM(messageID, reaction)
+	err = s.next.AddReactionToDM(messageID, reaction, authUser)
 	s.addReactionDMCounter.Inc()
 	return nil
 }
 
-func (s *svc) ChangeReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction) (err error) {
+func (s *svc) ChangeReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.ChangeReactionToDM(messageID, reaction)
+	err = s.next.ChangeReactionToDM(messageID, reaction, authUser)
 	s.changeReactionDMCounter.Inc()
 	return nil
 }
 
-func (s *svc) RemoveReactionFromDM(messageID, userID uuid.UUID) (err error) {
+func (s *svc) RemoveReactionFromDM(messageID, userID, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.RemoveReactionFromDM(messageID, userID)
+	err = s.next.RemoveReactionFromDM(messageID, userID, authUser)
 	s.removeReactionDMCounter.Inc()
 	return nil
 }
 
-func (s *svc) AddReactionToGroup(messageID, userId uuid.UUID, reaction groupmessageservice.Reaction) (err error) {
+func (s *svc) AddReactionToGroup(messageID, userId uuid.UUID, reaction groupmessageservice.Reaction, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.AddReactionToGroup(messageID, userId, reaction)
+	err = s.next.AddReactionToGroup(messageID, userId, reaction, authUser)
 	s.addReactionGroupCounter.Inc()
 	return nil
 }
 
-func (s *svc) ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessageservice.Reaction) (err error) {
+func (s *svc) ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessageservice.Reaction, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.ChangeReactionToGroup(messageID, reaction)
+	err = s.next.ChangeReactionToGroup(messageID, reaction, authUser)
 	s.changeReactionGroupCounter.Inc()
 	return nil
 }
 
-func (s *svc) RemoveReactionFromGroup(messageID, userID uuid.UUID) (err error) {
+func (s *svc) RemoveReactionFromGroup(messageID, userID, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.RemoveReactionFromGroup(messageID, userID)
+	err = s.next.RemoveReactionFromGroup(messageID, userID, authUser)
 	s.removeReactionGroupCounter.Inc()
 	return nil
 }

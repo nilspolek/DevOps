@@ -29,7 +29,7 @@ func (rest *Rest) addDirectMessageReaction(w http.ResponseWriter, r *http.Reques
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).AddReactionToDM(messageId, reaction)
+	err = (*(*rest).rs).AddReactionToDM(messageId, reaction, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -55,7 +55,7 @@ func (rest *Rest) changeDirectMessageReaction(w http.ResponseWriter, r *http.Req
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).ChangeReactionToDM(messageId, reaction)
+	err = (*(*rest).rs).ChangeReactionToDM(messageId, reaction, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -74,7 +74,7 @@ func (rest *Rest) deleteDirectMessageReaction(w http.ResponseWriter, r *http.Req
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).RemoveReactionFromDM(messageId, id)
+	err = (*(*rest).rs).RemoveReactionFromDM(messageId, id, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

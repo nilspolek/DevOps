@@ -44,46 +44,46 @@ func New(next messageservice.DirectMessageService, prefix string) (messageservic
 	return svc, err
 }
 
-func (s svc) GetMessages(userID uuid.UUID) (msgs []messageservice.Message, err error) {
+func (s svc) GetMessages(userID, authUser uuid.UUID) (msgs []messageservice.Message, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.getMessageCounter.Inc()
-	msgs, err = s.next.GetMessages(userID)
+	msgs, err = s.next.GetMessages(userID, authUser)
 	return
 }
 
-func (s svc) SendMessage(msg messageservice.Message) (err error) {
+func (s svc) SendMessage(msg messageservice.Message, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.sendMessageCounter.Inc()
-	err = s.next.SendMessage(msg)
+	err = s.next.SendMessage(msg, authUser)
 	return
 }
 
-func (s svc) ReplaceMessage(messageID uuid.UUID, msg messageservice.Message) (err error) {
+func (s svc) ReplaceMessage(messageID uuid.UUID, msg messageservice.Message, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.replaceMessageCounter.Inc()
-	err = s.next.ReplaceMessage(messageID, msg)
+	err = s.next.ReplaceMessage(messageID, msg, authUser)
 	return
 }
 
-func (s svc) DeleteMessage(messageID uuid.UUID) (err error) {
+func (s svc) DeleteMessage(messageID, authUser uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.deleteMessageCounter.Inc()
-	err = s.next.DeleteMessage(messageID)
+	err = s.next.DeleteMessage(messageID, authUser)
 	return
 }

@@ -16,7 +16,7 @@ func (rest *Rest) getGroups(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	groups, err := (*(*rest).gs).GetAllGroups(id)
+	groups, err := (*(*rest).gs).GetAllGroups(id, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -25,7 +25,7 @@ func (rest *Rest) getGroups(w http.ResponseWriter, r *http.Request) {
 }
 
 func (rest *Rest) createGroup(w http.ResponseWriter, r *http.Request) {
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -38,7 +38,7 @@ func (rest *Rest) createGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	groupId, err := (*(*rest).gs).CreateGroup(group)
+	groupId, err := (*(*rest).gs).CreateGroup(group, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -49,7 +49,7 @@ func (rest *Rest) createGroup(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -65,7 +65,7 @@ func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).EditGroup(group, gID)
+	err = (*(*rest).gs).EditGroup(group, gID, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -74,7 +74,7 @@ func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -84,7 +84,7 @@ func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).DeleteGroup(gID)
+	err = (*(*rest).gs).DeleteGroup(gID, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -93,7 +93,7 @@ func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
@@ -107,7 +107,7 @@ func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).AddUserToGroup(gID, uID)
+	err = (*(*rest).gs).AddUserToGroup(gID, uID, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -115,7 +115,7 @@ func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 
 func (rest *Rest) removeUserFromGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	_, err := uuid.Parse(r.Header.Get("userId"))
+	id, err := uuid.Parse(r.Header.Get("userId"))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
@@ -129,7 +129,7 @@ func (rest *Rest) removeUserFromGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).RemoveUserFromGroup(gID, uID)
+	err = (*(*rest).gs).RemoveUserFromGroup(gID, uID, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
