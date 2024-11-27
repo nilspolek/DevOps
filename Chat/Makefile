@@ -4,8 +4,11 @@ generate:
 build: generate
 	go build -o ./bin/chat main.go
 
-run: build
+run: build mongo-up
 	./bin/chat
+
+install:
+	go install github.com/swaggo/swag/cmd/swag@latest
 
 mongo-up:
 	docker compose up -d
