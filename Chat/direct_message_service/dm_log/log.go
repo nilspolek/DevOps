@@ -9,10 +9,10 @@ import (
 )
 
 type svc struct {
-	next messageservice.DirectMessageService
+	next *messageservice.DirectMessageService
 }
 
-func New(next messageservice.DirectMessageService) messageservice.DirectMessageService {
+func New(next *messageservice.DirectMessageService) messageservice.DirectMessageService {
 	return svc{next: next}
 }
 
@@ -23,7 +23,7 @@ func (s svc) GetMessages(userID, authUser uuid.UUID) (msgs []messageservice.Mess
 		}
 		goLog.Info("Get Direct Message | took: %s | %v", time.Since(tm), msgs)
 	}(time.Now())
-	msgs, err = s.next.GetMessages(userID, authUser)
+	msgs, err = (*s.next).GetMessages(userID, authUser)
 	return
 }
 
@@ -34,7 +34,7 @@ func (s svc) SendMessage(msg messageservice.Message, authUser uuid.UUID) (err er
 		}
 		goLog.Info("Send Direct Message | took: %s | %v", time.Since(tm), msg)
 	}(time.Now())
-	err = s.next.SendMessage(msg, authUser)
+	err = (*s.next).SendMessage(msg, authUser)
 	return
 }
 
@@ -45,7 +45,7 @@ func (s svc) ReplaceMessage(messageID uuid.UUID, msg messageservice.Message, aut
 		}
 		goLog.Info("Replace Direct Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.ReplaceMessage(messageID, msg, authUser)
+	err = (*s.next).ReplaceMessage(messageID, msg, authUser)
 	return
 }
 
@@ -56,6 +56,6 @@ func (s svc) DeleteMessage(messageID, authUser uuid.UUID) (err error) {
 		}
 		goLog.Info("Delete Direct Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.DeleteMessage(messageID, authUser)
+	err = (*s.next).DeleteMessage(messageID, authUser)
 	return
 }

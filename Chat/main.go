@@ -47,22 +47,22 @@ func main() {
 
 	// Enable logging if enabled
 	if ENABLE_LOG {
-		dms = dmlog.New(dms)
-		gms = gmlog.New(gms)
-		gs = glog.New(gs)
+		dms = dmlog.New(&dms)
+		gms = gmlog.New(&gms)
+		gs = glog.New(&gs)
 	}
 
 	// Enable prometheus if enabled
 	if ENABLE_PROMETHEUS {
-		dms, err = dmprometheus.New(dms, "direct_message_service")
+		dms, err = dmprometheus.New(&dms, "direct_message_service")
 		if err != nil {
 			panic(err)
 		}
-		gms, err = gmprometheus.New(gms, "group_message_service")
+		gms, err = gmprometheus.New(&gms, "group_message_service")
 		if err != nil {
 			panic(err)
 		}
-		gs, err = gprometheus.New(gs, "group_service")
+		gs, err = gprometheus.New(&gs, "group_service")
 		if err != nil {
 			panic(err)
 		}

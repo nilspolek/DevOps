@@ -7,7 +7,7 @@ import (
 )
 
 type svc struct {
-	next                groupservice.GroupService
+	next                *groupservice.GroupService
 	getAllGroupsCounter prometheus.Counter
 	createGroupCounter  prometheus.Counter
 	editGroupCounter    prometheus.Counter
@@ -17,7 +17,7 @@ type svc struct {
 	errorCounter        prometheus.Counter
 }
 
-func New(next groupservice.GroupService, prefic string) (groupservice.GroupService, error) {
+func New(next *groupservice.GroupService, prefic string) (groupservice.GroupService, error) {
 	svc := svc{
 		next:                next,
 		getAllGroupsCounter: prometheus.NewCounter(prometheus.CounterOpts{Name: prefic + "_get_all_groups_counter", Help: "Number of get all groups calls"}),
@@ -62,7 +62,7 @@ func (s svc) GetAllGroups(userId, authUser uuid.UUID) (gps []groupservice.Group,
 		}
 	}()
 	s.getAllGroupsCounter.Inc()
-	gps, err = s.next.GetAllGroups(userId, authUser)
+	gps, err = (*s.next).GetAllGroups(userId, authUser)
 	return
 }
 
@@ -73,7 +73,7 @@ func (s svc) CreateGroup(group groupservice.Group, authUser uuid.UUID) (id uuid.
 		}
 	}()
 	s.createGroupCounter.Inc()
-	id, err = s.next.CreateGroup(group, authUser)
+	id, err = (*s.next).CreateGroup(group, authUser)
 	return
 }
 
@@ -84,7 +84,7 @@ func (s svc) EditGroup(group groupservice.Group, id, authUser uuid.UUID) (err er
 		}
 	}()
 	s.editGroupCounter.Inc()
-	err = s.next.EditGroup(group, id, authUser)
+	err = (*s.next).EditGroup(group, id, authUser)
 	return
 }
 
@@ -95,7 +95,7 @@ func (s svc) DeleteGroup(id, authUser uuid.UUID) (err error) {
 		}
 	}()
 	s.deleteGroupCounter.Inc()
-	err = s.next.DeleteGroup(id, authUser)
+	err = (*s.next).DeleteGroup(id, authUser)
 	return
 }
 
@@ -106,7 +106,7 @@ func (s svc) AddUserToGroup(groupId, userId, authUser uuid.UUID) (err error) {
 		}
 	}()
 	s.addUserCounter.Inc()
-	err = s.next.AddUserToGroup(groupId, userId, authUser)
+	err = (*s.next).AddUserToGroup(groupId, userId, authUser)
 	return
 }
 
@@ -117,6 +117,6 @@ func (s svc) RemoveUserFromGroup(groupId, userId, authUser uuid.UUID) (err error
 		}
 	}()
 	s.removeUserCounter.Inc()
-	err = s.next.RemoveUserFromGroup(groupId, userId, authUser)
+	err = (*s.next).RemoveUserFromGroup(groupId, userId, authUser)
 	return
 }

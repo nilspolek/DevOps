@@ -9,7 +9,7 @@ import (
 )
 
 type svc struct {
-	next reactionservice.ReactionService
+	next *reactionservice.ReactionService
 
 	addReactionDMCounter    prometheus.Counter
 	changeReactionDMCounter prometheus.Counter
@@ -21,7 +21,7 @@ type svc struct {
 	errorReactionCounter       prometheus.Counter
 }
 
-func New(next reactionservice.ReactionService, prefix string) (reactionservice.ReactionService, error) {
+func New(next *reactionservice.ReactionService, prefix string) (reactionservice.ReactionService, error) {
 	svc := svc{
 		addReactionDMCounter: prometheus.NewCounter(prometheus.CounterOpts{
 			Name: prefix + "add_reaction_dm_total",
@@ -51,6 +51,7 @@ func New(next reactionservice.ReactionService, prefix string) (reactionservice.R
 			Name: prefix + "error_reaction_total",
 			Help: "Total number of errors in the reaction service",
 		}),
+		next: next,
 	}
 	err := prometheus.Register(svc.addReactionDMCounter)
 	if err != nil {
@@ -82,7 +83,7 @@ func (s *svc) AddReactionToDM(messageID uuid.UUID, reaction messageservice.React
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.AddReactionToDM(messageID, reaction, authUser)
+	err = (*s.next).AddReactionToDM(messageID, reaction, authUser)
 	s.addReactionDMCounter.Inc()
 	return nil
 }
@@ -93,7 +94,7 @@ func (s *svc) ChangeReactionToDM(messageID uuid.UUID, reaction messageservice.Re
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.ChangeReactionToDM(messageID, reaction, authUser)
+	err = (*s.next).ChangeReactionToDM(messageID, reaction, authUser)
 	s.changeReactionDMCounter.Inc()
 	return nil
 }
@@ -104,7 +105,7 @@ func (s *svc) RemoveReactionFromDM(messageID, userID, authUser uuid.UUID) (err e
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.RemoveReactionFromDM(messageID, userID, authUser)
+	err = (*s.next).RemoveReactionFromDM(messageID, userID, authUser)
 	s.removeReactionDMCounter.Inc()
 	return nil
 }
@@ -115,7 +116,7 @@ func (s *svc) AddReactionToGroup(messageID, userId uuid.UUID, reaction groupmess
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.AddReactionToGroup(messageID, userId, reaction, authUser)
+	err = (*s.next).AddReactionToGroup(messageID, userId, reaction, authUser)
 	s.addReactionGroupCounter.Inc()
 	return nil
 }
@@ -126,7 +127,7 @@ func (s *svc) ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessagese
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.ChangeReactionToGroup(messageID, reaction, authUser)
+	err = (*s.next).ChangeReactionToGroup(messageID, reaction, authUser)
 	s.changeReactionGroupCounter.Inc()
 	return nil
 }
@@ -137,7 +138,7 @@ func (s *svc) RemoveReactionFromGroup(messageID, userID, authUser uuid.UUID) (er
 			s.errorReactionCounter.Inc()
 		}
 	}()
-	err = s.next.RemoveReactionFromGroup(messageID, userID, authUser)
+	err = (*s.next).RemoveReactionFromGroup(messageID, userID, authUser)
 	s.removeReactionGroupCounter.Inc()
 	return nil
 }

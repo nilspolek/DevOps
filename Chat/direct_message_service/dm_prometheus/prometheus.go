@@ -7,7 +7,7 @@ import (
 )
 
 type svc struct {
-	next                  messageservice.DirectMessageService
+	next                  *messageservice.DirectMessageService
 	getMessageCounter     prometheus.Counter
 	sendMessageCounter    prometheus.Counter
 	replaceMessageCounter prometheus.Counter
@@ -15,7 +15,7 @@ type svc struct {
 	errorCounter          prometheus.Counter
 }
 
-func New(next messageservice.DirectMessageService, prefix string) (messageservice.DirectMessageService, error) {
+func New(next *messageservice.DirectMessageService, prefix string) (messageservice.DirectMessageService, error) {
 	svc := svc{
 		next:                  next,
 		getMessageCounter:     prometheus.NewCounter(prometheus.CounterOpts{Name: prefix + "_get_direct_message_counter", Help: "Number of get messages calls"}),
@@ -51,7 +51,7 @@ func (s svc) GetMessages(userID, authUser uuid.UUID) (msgs []messageservice.Mess
 		}
 	}()
 	s.getMessageCounter.Inc()
-	msgs, err = s.next.GetMessages(userID, authUser)
+	msgs, err = (*s.next).GetMessages(userID, authUser)
 	return
 }
 
@@ -62,7 +62,7 @@ func (s svc) SendMessage(msg messageservice.Message, authUser uuid.UUID) (err er
 		}
 	}()
 	s.sendMessageCounter.Inc()
-	err = s.next.SendMessage(msg, authUser)
+	err = (*s.next).SendMessage(msg, authUser)
 	return
 }
 
@@ -73,7 +73,7 @@ func (s svc) ReplaceMessage(messageID uuid.UUID, msg messageservice.Message, aut
 		}
 	}()
 	s.replaceMessageCounter.Inc()
-	err = s.next.ReplaceMessage(messageID, msg, authUser)
+	err = (*s.next).ReplaceMessage(messageID, msg, authUser)
 	return
 }
 
@@ -84,6 +84,6 @@ func (s svc) DeleteMessage(messageID, authUser uuid.UUID) (err error) {
 		}
 	}()
 	s.deleteMessageCounter.Inc()
-	err = s.next.DeleteMessage(messageID, authUser)
+	err = (*s.next).DeleteMessage(messageID, authUser)
 	return
 }

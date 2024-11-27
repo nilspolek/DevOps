@@ -11,10 +11,10 @@ import (
 )
 
 type svc struct {
-	next reactionservice.ReactionService
+	next *reactionservice.ReactionService
 }
 
-func New(next reactionservice.ReactionService, prefix string) reactionservice.ReactionService {
+func New(next *reactionservice.ReactionService, prefix string) reactionservice.ReactionService {
 	svc := svc{
 		next: next,
 	}
@@ -28,7 +28,7 @@ func (s *svc) AddReactionToDM(messageID uuid.UUID, reaction messageservice.React
 		}
 		goLog.Info("Add Reaction to Direct Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.AddReactionToDM(messageID, reaction, authUser)
+	err = (*s.next).AddReactionToDM(messageID, reaction, authUser)
 	return nil
 }
 
@@ -39,7 +39,7 @@ func (s *svc) ChangeReactionToDM(messageID uuid.UUID, reaction messageservice.Re
 		}
 		goLog.Info("Changed Reaction from Direct Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.ChangeReactionToDM(messageID, reaction, authUser)
+	err = (*s.next).ChangeReactionToDM(messageID, reaction, authUser)
 	return nil
 }
 
@@ -50,7 +50,7 @@ func (s *svc) RemoveReactionFromDM(messageID, userID, authUser uuid.UUID) (err e
 		}
 		goLog.Info("Removed Reaction from Direct Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.RemoveReactionFromDM(messageID, userID, authUser)
+	err = (*s.next).RemoveReactionFromDM(messageID, userID, authUser)
 	return nil
 }
 
@@ -61,7 +61,7 @@ func (s *svc) AddReactionToGroup(messageID, userId uuid.UUID, reaction groupmess
 		}
 		goLog.Info("Add Reaction to Group Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.AddReactionToGroup(messageID, userId, reaction, authUser)
+	err = (*s.next).AddReactionToGroup(messageID, userId, reaction, authUser)
 	return nil
 }
 
@@ -72,7 +72,7 @@ func (s *svc) ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessagese
 		}
 		goLog.Info("Change Reaction from Group Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.ChangeReactionToGroup(messageID, reaction, authUser)
+	err = (*s.next).ChangeReactionToGroup(messageID, reaction, authUser)
 	return nil
 }
 
@@ -83,6 +83,6 @@ func (s *svc) RemoveReactionFromGroup(messageID, userID, authUser uuid.UUID) (er
 		}
 		goLog.Info("Removed Reaction from Group Message | took: %s", time.Since(tm))
 	}(time.Now())
-	err = s.next.RemoveReactionFromGroup(messageID, userID, authUser)
+	err = (*s.next).RemoveReactionFromGroup(messageID, userID, authUser)
 	return nil
 }
