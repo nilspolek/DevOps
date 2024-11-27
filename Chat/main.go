@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/nilspolek/DevOps/Chat/direct_message_service/dm_impl"
@@ -26,23 +27,25 @@ import (
 )
 
 const (
-	DEFAULT_PORT      = 8080
-	ENABLE_LOG        = true
-	ENABLE_PROMETHEUS = false
-	ENABLE_SWAGGER    = true
+	DEFAULT_PORT = 8080
 )
 
-//	@title						Chat API
-//	@version					1
-//	@description				This is the API for the Chat microservice
-//	@SecurityDefinitions.apikey	BearerAuth
-//	@in							header
-//	@name						Authorization
+// @title						Chat API
+// @version					1
+// @description				This is the API for the Chat microservice
+// @SecurityDefinitions.apikey	BearerAuth
+// @in							header
+// @name						Authorization
 //
 //go:generate swag init
 func main() {
 	// Assinging the address to the environment variable CHAT_ADDRESS
-	var address string
+	var (
+		address      string
+		isLogging    bool = true
+		isPrometheus bool = false
+		isSwagger    bool = false
+	)
 	if address = os.Getenv("CHAT_ADDRESS"); address == "" {
 		address = fmt.Sprintf(":%d", DEFAULT_PORT)
 	}
@@ -59,14 +62,23 @@ func main() {
 	mux := mux.NewRouter()
 
 	// Enable logging if enabled
-	if ENABLE_LOG {
+	if logging := os.Getenv("ENABLE_LOG"); strings.ToLower(logging) == "false" {
+		isLogging = false
+	}
+
+	// Enable logging if enabled
+	if isLogging {
 		dms = dmlog.New(&dms)
 		gms = gmlog.New(&gms)
 		gs = glog.New(&gs)
 	}
 
 	// Enable prometheus if enabled
-	if ENABLE_PROMETHEUS {
+	if prometheusing := os.Getenv("ENABLE_PROMETHEUS"); strings.ToLower(prometheusing) == "true" {
+		isPrometheus = true
+	}
+	// Enable prometheus if enabled
+	if isPrometheus {
 		dms, err = dmprometheus.New(&dms, "direct_message_service")
 		if err != nil {
 			panic(err)
@@ -84,12 +96,17 @@ func main() {
 
 	// Run the server
 	router := rest.New(mux, &dms, &gms, &gs, &jwt)
-	if ENABLE_LOG {
+	if isLogging {
 		goLog.Info("Server is running on address %s", address)
 	}
 
+	// Enable swagger if enabled
+	if swagging := os.Getenv("ENABLE_SWAGGER"); strings.ToLower(swagging) == "true" {
+		isSwagger = true
+	}
+
 	// Run swagger if enabled
-	if ENABLE_SWAGGER {
+	if isSwagger {
 		// generate swagger documentation
 		mux.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 	}
