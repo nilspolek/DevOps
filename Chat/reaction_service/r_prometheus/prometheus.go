@@ -1,6 +1,7 @@
 package rprometheus
 
 import (
+	"github.com/google/uuid"
 	messageservice "github.com/nilspolek/DevOps/Chat/direct_message_service"
 	groupmessageservice "github.com/nilspolek/DevOps/Chat/group_message_service"
 	reactionservice "github.com/nilspolek/DevOps/Chat/reaction_service"
@@ -75,7 +76,7 @@ func New(next reactionservice.ReactionService, prefix string) (reactionservice.R
 	return &svc, err
 }
 
-func (s *svc) AddReactionToDM(messageID reactionservice.ID, reaction messageservice.Reaction) (err error) {
+func (s *svc) AddReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
@@ -86,7 +87,7 @@ func (s *svc) AddReactionToDM(messageID reactionservice.ID, reaction messageserv
 	return nil
 }
 
-func (s *svc) ChangeReactionToDM(messageID reactionservice.ID, reaction messageservice.Reaction) (err error) {
+func (s *svc) ChangeReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
@@ -97,7 +98,7 @@ func (s *svc) ChangeReactionToDM(messageID reactionservice.ID, reaction messages
 	return nil
 }
 
-func (s *svc) RemoveReactionFromDM(messageID, userID reactionservice.ID) (err error) {
+func (s *svc) RemoveReactionFromDM(messageID, userID uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
@@ -108,7 +109,7 @@ func (s *svc) RemoveReactionFromDM(messageID, userID reactionservice.ID) (err er
 	return nil
 }
 
-func (s *svc) AddReactionToGroup(messageID, userId reactionservice.ID, reaction groupmessageservice.Reaction) (err error) {
+func (s *svc) AddReactionToGroup(messageID, userId uuid.UUID, reaction groupmessageservice.Reaction) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
@@ -119,7 +120,7 @@ func (s *svc) AddReactionToGroup(messageID, userId reactionservice.ID, reaction 
 	return nil
 }
 
-func (s *svc) ChangeReactionToGroup(messageID reactionservice.ID, reaction groupmessageservice.Reaction) (err error) {
+func (s *svc) ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessageservice.Reaction) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()
@@ -130,7 +131,7 @@ func (s *svc) ChangeReactionToGroup(messageID reactionservice.ID, reaction group
 	return nil
 }
 
-func (s *svc) RemoveReactionFromGroup(messageID, userID reactionservice.ID) (err error) {
+func (s *svc) RemoveReactionFromGroup(messageID, userID uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorReactionCounter.Inc()

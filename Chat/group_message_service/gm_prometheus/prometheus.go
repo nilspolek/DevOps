@@ -1,6 +1,7 @@
 package gmprometheus
 
 import (
+	"github.com/google/uuid"
 	groupmessageservice "github.com/nilspolek/DevOps/Chat/group_message_service"
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -43,7 +44,7 @@ func New(next groupmessageservice.GroupMessageService, prefix string) (groupmess
 	return svc, err
 }
 
-func (s svc) GetMessages(groupID groupmessageservice.ID) (msgs []groupmessageservice.Message, err error) {
+func (s svc) GetMessages(groupID uuid.UUID) (msgs []groupmessageservice.Message, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -54,7 +55,7 @@ func (s svc) GetMessages(groupID groupmessageservice.ID) (msgs []groupmessageser
 	return
 }
 
-func (s svc) SendMessage(groupID groupmessageservice.ID, msg groupmessageservice.Message) (err error) {
+func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -65,7 +66,7 @@ func (s svc) SendMessage(groupID groupmessageservice.ID, msg groupmessageservice
 	return
 }
 
-func (s svc) ReplaceMessage(messageID groupmessageservice.ID, msg groupmessageservice.Message) (err error) {
+func (s svc) ReplaceMessage(messageID uuid.UUID, msg groupmessageservice.Message) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -76,7 +77,7 @@ func (s svc) ReplaceMessage(messageID groupmessageservice.ID, msg groupmessagese
 	return
 }
 
-func (s svc) DeleteMessage(messageID groupmessageservice.ID) (err error) {
+func (s svc) DeleteMessage(messageID uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()

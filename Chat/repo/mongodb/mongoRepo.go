@@ -8,7 +8,6 @@ import (
 	messageservice "github.com/nilspolek/DevOps/Chat/direct_message_service"
 	groupmessageservice "github.com/nilspolek/DevOps/Chat/group_message_service"
 	groupservice "github.com/nilspolek/DevOps/Chat/group_service"
-	reactionservice "github.com/nilspolek/DevOps/Chat/reaction_service"
 	"github.com/nilspolek/DevOps/Chat/repo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -54,7 +53,7 @@ func New() (repo.Repo, error) {
 	return mr, nil
 }
 
-func (mr mongorepo) GetDirectMessages(userID messageservice.ID) ([]messageservice.Message, error) {
+func (mr mongorepo) GetDirectMessages(userID uuid.UUID) ([]messageservice.Message, error) {
 	var (
 		messages []messageservice.Message
 		ctx      = context.Background()
@@ -88,7 +87,7 @@ func (mr mongorepo) SendDirectMessage(msg messageservice.Message) error {
 	return err
 }
 
-func (mr mongorepo) ReplaceDirecMessage(messageID messageservice.ID, msg messageservice.Message) error {
+func (mr mongorepo) ReplaceDirecMessage(messageID uuid.UUID, msg messageservice.Message) error {
 	var (
 		ctx = context.Background()
 	)
@@ -96,7 +95,7 @@ func (mr mongorepo) ReplaceDirecMessage(messageID messageservice.ID, msg message
 	return err
 }
 
-func (mr mongorepo) DeleteDirectMessage(messageID messageservice.ID) error {
+func (mr mongorepo) DeleteDirectMessage(messageID uuid.UUID) error {
 	var (
 		ctx = context.Background()
 	)
@@ -104,7 +103,7 @@ func (mr mongorepo) DeleteDirectMessage(messageID messageservice.ID) error {
 	return err
 }
 
-func (mr mongorepo) GetGroupMessages(groupID groupmessageservice.ID) ([]groupmessageservice.Message, error) {
+func (mr mongorepo) GetGroupMessages(groupID uuid.UUID) ([]groupmessageservice.Message, error) {
 	var (
 		messages []groupmessageservice.Message
 		ctx      = context.Background()
@@ -124,7 +123,7 @@ func (mr mongorepo) GetGroupMessages(groupID groupmessageservice.ID) ([]groupmes
 	return messages, err
 }
 
-func (mr mongorepo) SendMessageToGroup(groupID groupmessageservice.ID, msg groupmessageservice.Message) error {
+func (mr mongorepo) SendMessageToGroup(groupID uuid.UUID, msg groupmessageservice.Message) error {
 	var (
 		ctx = context.Background()
 	)
@@ -133,7 +132,7 @@ func (mr mongorepo) SendMessageToGroup(groupID groupmessageservice.ID, msg group
 	return err
 }
 
-func (mr mongorepo) ReplaceGroupMessage(messageID groupmessageservice.ID, msg groupmessageservice.Message) error {
+func (mr mongorepo) ReplaceGroupMessage(messageID uuid.UUID, msg groupmessageservice.Message) error {
 	var (
 		ctx = context.Background()
 	)
@@ -141,19 +140,19 @@ func (mr mongorepo) ReplaceGroupMessage(messageID groupmessageservice.ID, msg gr
 	return err
 }
 
-func (mr mongorepo) DeleteGroupMessage(messageID groupmessageservice.ID) error {
+func (mr mongorepo) DeleteGroupMessage(messageID uuid.UUID) error {
 	var (
 		ctx = context.Background()
 	)
 	_, err := mr.GroupMessageCollection.DeleteOne(ctx, bson.M{"id": messageID})
 	return err
 }
-func (mr mongorepo) GetAllGroups(userId groupservice.ID) ([]groupservice.Group, error) {
+func (mr mongorepo) GetAllGroups(userId uuid.UUID) ([]groupservice.Group, error) {
 	var (
 		ctx    = context.Background()
 		groups []groupservice.Group
 	)
-	filter := bson.M{"members": bson.M{"$in": []groupservice.ID{userId}}}
+	filter := bson.M{"members": bson.M{"$in": []uuid.UUID{userId}}}
 
 	cursor, err := mr.GroupCollection.Find(ctx, filter)
 	if err != nil {
@@ -169,16 +168,16 @@ func (mr mongorepo) GetAllGroups(userId groupservice.ID) ([]groupservice.Group, 
 	}
 	return groups, err
 }
-func (mr mongorepo) CreateGroup(group groupservice.Group) (groupservice.ID, error) {
+func (mr mongorepo) CreateGroup(group groupservice.Group) (uuid.UUID, error) {
 	var (
 		ctx = context.Background()
 	)
-	group.Id = groupservice.ID(uuid.New())
+	group.Id = uuid.New()
 	_, err := mr.GroupCollection.InsertOne(ctx, group)
 	return group.Id, err
 }
 
-func (mr mongorepo) EditGroup(group groupservice.Group, groupId groupservice.ID) error {
+func (mr mongorepo) EditGroup(group groupservice.Group, groupId uuid.UUID) error {
 	ctx := context.Background()
 
 	filter := bson.M{"id": groupId}
@@ -194,7 +193,7 @@ func (mr mongorepo) EditGroup(group groupservice.Group, groupId groupservice.ID)
 	return err
 }
 
-func (mr mongorepo) DeleteGroup(groupID groupservice.ID) error {
+func (mr mongorepo) DeleteGroup(groupID uuid.UUID) error {
 	ctx := context.Background()
 
 	filter := bson.M{"id": groupID}
@@ -202,7 +201,7 @@ func (mr mongorepo) DeleteGroup(groupID groupservice.ID) error {
 	return err
 }
 
-func (mr mongorepo) AddUserToGroup(groupId, userID groupservice.ID) error {
+func (mr mongorepo) AddUserToGroup(groupId, userID uuid.UUID) error {
 	ctx := context.Background()
 
 	filter := bson.M{"id": groupId}
@@ -216,7 +215,7 @@ func (mr mongorepo) AddUserToGroup(groupId, userID groupservice.ID) error {
 	return err
 }
 
-func (mr mongorepo) RemoveUserFromGroup(groupId, userID groupservice.ID) error {
+func (mr mongorepo) RemoveUserFromGroup(groupId, userID uuid.UUID) error {
 	ctx := context.Background()
 
 	filter := bson.M{"_id": groupId}
@@ -230,7 +229,7 @@ func (mr mongorepo) RemoveUserFromGroup(groupId, userID groupservice.ID) error {
 	return err
 }
 
-func (mr mongorepo) AddReactionToDM(messageID reactionservice.ID, reaction messageservice.Reaction) error {
+func (mr mongorepo) AddReactionToDM(messageID uuid.UUID, reaction messageservice.Reaction) error {
 	ctx := context.Background()
 
 	filter := bson.M{"id": messageID}
@@ -243,7 +242,7 @@ func (mr mongorepo) AddReactionToDM(messageID reactionservice.ID, reaction messa
 	return err
 }
 
-func (mr mongorepo) ChangeReactionToDM(messageID, userID reactionservice.ID, reaction messageservice.Reaction) error {
+func (mr mongorepo) ChangeReactionToDM(messageID, userID uuid.UUID, reaction messageservice.Reaction) error {
 	ctx := context.Background()
 
 	filter := bson.M{"id": messageID}
@@ -280,7 +279,7 @@ func (mr mongorepo) ChangeReactionToDM(messageID, userID reactionservice.ID, rea
 	return nil
 }
 
-func (mr mongorepo) RemoveReactionFromDM(messageID, userID reactionservice.ID) error {
+func (mr mongorepo) RemoveReactionFromDM(messageID, userID uuid.UUID) error {
 	ctx := context.Background()
 	filter := bson.M{"id": messageID}
 	update := bson.M{
@@ -293,7 +292,7 @@ func (mr mongorepo) RemoveReactionFromDM(messageID, userID reactionservice.ID) e
 	return err
 }
 
-func (mr mongorepo) AddReactionToGroup(messageID, userID groupmessageservice.ID, reaction groupmessageservice.Reaction) error {
+func (mr mongorepo) AddReactionToGroup(messageID, userID uuid.UUID, reaction groupmessageservice.Reaction) error {
 	ctx := context.Background()
 	filter := bson.M{"id": messageID}
 	update := bson.M{
@@ -306,7 +305,7 @@ func (mr mongorepo) AddReactionToGroup(messageID, userID groupmessageservice.ID,
 	return err
 }
 
-func (mr mongorepo) ChangeReactionToGroup(messageID groupmessageservice.ID, reaction groupmessageservice.Reaction) error {
+func (mr mongorepo) ChangeReactionToGroup(messageID uuid.UUID, reaction groupmessageservice.Reaction) error {
 	ctx := context.Background()
 	var err error
 	filter := bson.M{"id": messageID}
@@ -337,7 +336,7 @@ func (mr mongorepo) ChangeReactionToGroup(messageID groupmessageservice.ID, reac
 	return err
 }
 
-func (mr mongorepo) RemoveReactionFromGroup(messageID, userID groupmessageservice.ID) error {
+func (mr mongorepo) RemoveReactionFromGroup(messageID, userID uuid.UUID) error {
 	ctx := context.Background()
 	filter := bson.M{"id": messageID}
 

@@ -7,7 +7,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	messageservice "github.com/nilspolek/DevOps/Chat/direct_message_service"
-	reactionservice "github.com/nilspolek/DevOps/Chat/reaction_service"
 )
 
 func (rest *Rest) addDirectMessageReaction(w http.ResponseWriter, r *http.Request) {
@@ -25,13 +24,13 @@ func (rest *Rest) addDirectMessageReaction(w http.ResponseWriter, r *http.Reques
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	reaction.Sender = messageservice.ID(id)
+	reaction.Sender = id
 	messageId, err := uuid.Parse(vars["messageId"])
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).AddReactionToDM(reactionservice.ID(messageId), reaction)
+	err = (*(*rest).rs).AddReactionToDM(messageId, reaction)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -52,13 +51,13 @@ func (rest *Rest) changeDirectMessageReaction(w http.ResponseWriter, r *http.Req
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	reaction.Sender = messageservice.ID(id)
+	reaction.Sender = id
 	messageId, err := uuid.Parse(vars["messageId"])
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).ChangeReactionToDM(reactionservice.ID(messageId), reaction)
+	err = (*(*rest).rs).ChangeReactionToDM(messageId, reaction)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -78,7 +77,7 @@ func (rest *Rest) deleteDirectMessageReaction(w http.ResponseWriter, r *http.Req
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).RemoveReactionFromDM(reactionservice.ID(messageId), reactionservice.ID(id))
+	err = (*(*rest).rs).RemoveReactionFromDM(messageId, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

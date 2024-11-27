@@ -8,24 +8,22 @@ import (
 
 type DirectMessageService interface {
 	// Returns all Messages that a readable for a user (userID)
-	GetMessages(userID ID) ([]Message, error)
+	GetMessages(userID uuid.UUID) ([]Message, error)
 	SendMessage(msg Message) error
-	ReplaceMessage(messageID ID, msg Message) error
-	DeleteMessage(messageID ID) error
+	ReplaceMessage(messageID uuid.UUID, msg Message) error
+	DeleteMessage(messageID uuid.UUID) error
 }
 
-type ID uuid.UUID
-
 type Reaction struct {
-	Sender   ID     `json:"sender"`
-	Reaction string `json:"reaction"`
+	Sender   uuid.UUID `json:"sender"`
+	Reaction string    `json:"reaction"`
 }
 
 type Message struct {
-	Id         ID         `json:"id"`
+	Id         uuid.UUID  `json:"id"`
 	Content    string     `json:"content"`
-	SenderID   ID         `json:"sender"`
-	ReceiverID ID         `json:"receiver"`
+	SenderID   uuid.UUID  `json:"sender"`
+	ReceiverID uuid.UUID  `json:"receiver"`
 	Timestamp  time.Time  `json:"timestamp"`
 	ImageUrl   string     `json:"image"`
 	Reactions  []Reaction `json:"reactions"`

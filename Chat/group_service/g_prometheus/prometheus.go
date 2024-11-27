@@ -1,6 +1,7 @@
 package gprometheus
 
 import (
+	"github.com/google/uuid"
 	groupservice "github.com/nilspolek/DevOps/Chat/group_service"
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -54,7 +55,7 @@ func New(next groupservice.GroupService, prefic string) (groupservice.GroupServi
 	return &svc, prometheus.Register(svc.errorCounter)
 }
 
-func (s svc) GetAllGroups(userId groupservice.ID) (gps []groupservice.Group, err error) {
+func (s svc) GetAllGroups(userId uuid.UUID) (gps []groupservice.Group, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -65,7 +66,7 @@ func (s svc) GetAllGroups(userId groupservice.ID) (gps []groupservice.Group, err
 	return
 }
 
-func (s svc) CreateGroup(group groupservice.Group) (id groupservice.ID, err error) {
+func (s svc) CreateGroup(group groupservice.Group) (id uuid.UUID, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -76,7 +77,7 @@ func (s svc) CreateGroup(group groupservice.Group) (id groupservice.ID, err erro
 	return
 }
 
-func (s svc) EditGroup(group groupservice.Group, id groupservice.ID) (err error) {
+func (s svc) EditGroup(group groupservice.Group, id uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -87,7 +88,7 @@ func (s svc) EditGroup(group groupservice.Group, id groupservice.ID) (err error)
 	return
 }
 
-func (s svc) DeleteGroup(id groupservice.ID) (err error) {
+func (s svc) DeleteGroup(id uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -98,7 +99,7 @@ func (s svc) DeleteGroup(id groupservice.ID) (err error) {
 	return
 }
 
-func (s svc) AddUserToGroup(groupId, userId groupservice.ID) (err error) {
+func (s svc) AddUserToGroup(groupId, userId uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -109,7 +110,7 @@ func (s svc) AddUserToGroup(groupId, userId groupservice.ID) (err error) {
 	return
 }
 
-func (s svc) RemoveUserFromGroup(groupId, userId groupservice.ID) (err error) {
+func (s svc) RemoveUserFromGroup(groupId, userId uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()

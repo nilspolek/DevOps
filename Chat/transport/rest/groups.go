@@ -17,7 +17,7 @@ func (rest *Rest) getGroups(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	groups, err := (*(*rest).gs).GetAllGroups(groupservice.ID(id))
+	groups, err := (*(*rest).gs).GetAllGroups(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -68,7 +68,7 @@ func (rest *Rest) editGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).EditGroup(group, groupservice.ID(gID))
+	err = (*(*rest).gs).EditGroup(group, gID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -88,7 +88,7 @@ func (rest *Rest) deleteGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).DeleteGroup(groupservice.ID(gID))
+	err = (*(*rest).gs).DeleteGroup(gID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -112,7 +112,7 @@ func (rest *Rest) addUserToGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).AddUserToGroup(groupservice.ID(gID), groupservice.ID(uID))
+	err = (*(*rest).gs).AddUserToGroup(gID, uID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -135,7 +135,7 @@ func (rest *Rest) removeUserFromGroup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gs).RemoveUserFromGroup(groupservice.ID(gID), groupservice.ID(uID))
+	err = (*(*rest).gs).RemoveUserFromGroup(gID, uID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

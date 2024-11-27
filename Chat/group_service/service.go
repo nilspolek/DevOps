@@ -8,33 +8,31 @@ import (
 
 type GroupService interface {
 	// Returns all Groups an user has access to
-	GetAllGroups(userID ID) ([]Group, error)
-	CreateGroup(group Group) (ID, error)
-	EditGroup(group Group, id ID) error
-	DeleteGroup(id ID) error
-	AddUserToGroup(groupId, userId ID) error
-	RemoveUserFromGroup(groupId, userId ID) error
+	GetAllGroups(userID uuid.UUID) ([]Group, error)
+	CreateGroup(group Group) (uuid.UUID, error)
+	EditGroup(group Group, id uuid.UUID) error
+	DeleteGroup(id uuid.UUID) error
+	AddUserToGroup(groupId, userId uuid.UUID) error
+	RemoveUserFromGroup(groupId, userId uuid.UUID) error
 }
 
-type ID uuid.UUID
-
 type Group struct {
-	Id       ID       `json:"id"`
-	Title    string   `json:"title"`
-	ImageUrl string   `json:"image"`
-	Members  []Member `json:"members"`
+	Id       uuid.UUID `json:"id"`
+	Title    string    `json:"title"`
+	ImageUrl string    `json:"image"`
+	Members  []Member  `json:"members"`
 }
 
 type Message struct {
-	Id        ID        `json:"id"`
+	Id        uuid.UUID `json:"id"`
 	Content   string    `json:"content"`
 	Sender    Member    `json:"sender"`
 	Timestamp time.Time `json:"timestamp"`
-	imageUrl  string    `json:"image"`
+	ImageUrl  string    `json:"image"`
 }
 
 type Member struct {
-	Id       ID     `json:"id"`
-	name     string `json:"name"`
-	imageUrl string `json:"image"`
+	Id       uuid.UUID `json:"id"`
+	Name     string    `json:"name"`
+	ImageUrl string    `json:"image"`
 }

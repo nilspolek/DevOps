@@ -21,7 +21,7 @@ func (rest *Rest) getGroupMessages(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	gMessages, err := (*(*rest).gms).GetMessages(groupmessageservice.ID(gId))
+	gMessages, err := (*(*rest).gms).GetMessages(gId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -46,7 +46,7 @@ func (rest *Rest) sendGroupMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gms).SendMessage(groupmessageservice.ID(gId), gMessage)
+	err = (*(*rest).gms).SendMessage(gId, gMessage)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -69,7 +69,7 @@ func (rest *Rest) replaceGroupMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gms).ReplaceMessage(groupmessageservice.ID(gId), gMessage)
+	err = (*(*rest).gms).ReplaceMessage(gId, gMessage)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -91,7 +91,7 @@ func (rest *Rest) deleteGroupMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gms).DeleteMessage(groupmessageservice.ID(mId))
+	err = (*(*rest).gms).DeleteMessage(mId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

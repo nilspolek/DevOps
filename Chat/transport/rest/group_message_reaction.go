@@ -7,7 +7,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	groupmessageservice "github.com/nilspolek/DevOps/Chat/group_message_service"
-	reactionservice "github.com/nilspolek/DevOps/Chat/reaction_service"
 )
 
 func (rest *Rest) addGroupMessageReaction(w http.ResponseWriter, r *http.Request) {
@@ -26,13 +25,13 @@ func (rest *Rest) addGroupMessageReaction(w http.ResponseWriter, r *http.Request
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	reaction.Sender.Id = groupmessageservice.ID(id)
+	reaction.Sender.Id = id
 	messageId, err := uuid.Parse(vars["messageId"])
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).AddReactionToGroup(reactionservice.ID(messageId), reactionservice.ID(id), reaction)
+	err = (*(*rest).rs).AddReactionToGroup(messageId, id, reaction)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -55,13 +54,13 @@ func (rest *Rest) changeGroupReaction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	reaction.Sender.Id = groupmessageservice.ID(id)
+	reaction.Sender.Id = id
 	messageId, err := uuid.Parse(vars["messageId"])
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).ChangeReactionToGroup(reactionservice.ID(messageId), reaction)
+	err = (*(*rest).rs).ChangeReactionToGroup(messageId, reaction)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -81,7 +80,7 @@ func (rest *Rest) deleteGroupReaction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = (*(*rest).rs).RemoveReactionFromGroup(reactionservice.ID(messageId), reactionservice.ID(id))
+	err = (*(*rest).rs).RemoveReactionFromGroup(messageId, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

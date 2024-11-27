@@ -1,6 +1,7 @@
 package dmprometheus
 
 import (
+	"github.com/google/uuid"
 	messageservice "github.com/nilspolek/DevOps/Chat/direct_message_service"
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -43,7 +44,7 @@ func New(next messageservice.DirectMessageService, prefix string) (messageservic
 	return svc, err
 }
 
-func (s svc) GetMessages(userID messageservice.ID) (msgs []messageservice.Message, err error) {
+func (s svc) GetMessages(userID uuid.UUID) (msgs []messageservice.Message, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -65,7 +66,7 @@ func (s svc) SendMessage(msg messageservice.Message) (err error) {
 	return
 }
 
-func (s svc) ReplaceMessage(messageID messageservice.ID, msg messageservice.Message) (err error) {
+func (s svc) ReplaceMessage(messageID uuid.UUID, msg messageservice.Message) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
@@ -76,7 +77,7 @@ func (s svc) ReplaceMessage(messageID messageservice.ID, msg messageservice.Mess
 	return
 }
 
-func (s svc) DeleteMessage(messageID messageservice.ID) (err error) {
+func (s svc) DeleteMessage(messageID uuid.UUID) (err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
