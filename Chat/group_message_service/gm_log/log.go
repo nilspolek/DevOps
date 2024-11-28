@@ -30,14 +30,14 @@ func (s svc) GetMessages(groupID, authUser uuid.UUID) (msgs []groupmessageservic
 	return
 }
 
-func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) (err error) {
+func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) (id uuid.UUID, err error) {
 	defer func(tm time.Time) {
 		if err != nil {
 			goLog.Error("%v", err)
 		}
 		goLog.Info("Send Group Message | took: %s | %v", time.Since(tm), msg)
 	}(time.Now())
-	err = s.next.SendMessage(groupID, msg, authUser)
+	id, err = s.next.SendMessage(groupID, msg, authUser)
 	return
 }
 

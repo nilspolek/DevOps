@@ -62,7 +62,7 @@ func (rest *Rest) sendDirectMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	message.SenderID = id
-	err = (*(*rest).dms).SendMessage(message, id)
+	_, err = (*(*rest).dms).SendMessage(message, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

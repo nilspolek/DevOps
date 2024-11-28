@@ -69,7 +69,7 @@ func (rest *Rest) sendGroupMessage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
-	err = (*(*rest).gms).SendMessage(gId, gMessage, id)
+	_, err = (*(*rest).gms).SendMessage(gId, gMessage, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

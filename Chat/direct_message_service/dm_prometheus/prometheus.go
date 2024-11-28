@@ -55,14 +55,14 @@ func (s svc) GetMessages(userID, authUser uuid.UUID) (msgs []messageservice.Mess
 	return
 }
 
-func (s svc) SendMessage(msg messageservice.Message, authUser uuid.UUID) (err error) {
+func (s svc) SendMessage(msg messageservice.Message, authUser uuid.UUID) (id uuid.UUID, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.sendMessageCounter.Inc()
-	err = s.next.SendMessage(msg, authUser)
+	id, err = s.next.SendMessage(msg, authUser)
 	return
 }
 

@@ -13,6 +13,7 @@ var (
 	receiverID = uuid.New()
 	user       = uuid.New()
 	dm         messageservice.DirectMessageService
+	msgId      uuid.UUID
 )
 
 func TestNew(t *testing.T) {
@@ -24,6 +25,9 @@ func TestNew(t *testing.T) {
 }
 
 func TestSendMessages(t *testing.T) {
+	var (
+		err error
+	)
 	message := messageservice.Message{
 		Content:    "Some test Content",
 		ReceiverID: receiverID,
@@ -38,7 +42,10 @@ func TestSendMessages(t *testing.T) {
 			},
 		},
 	}
-	dm.SendMessage(message, user)
+	msgId, err = dm.SendMessage(message, user)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestGetMessages(t *testing.T) {
@@ -46,5 +53,42 @@ func TestGetMessages(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(msgs)
+	passed := false
+	for _, msg := range msgs {
+		if msg.Id == msgId {
+			passed = true
+		}
+	}
+	if !passed {
+		t.Fatal("Message was not in messages")
+	}
+	if len(msgs) == 0 {
+		t.Fatal("No messages found")
+	}
+}
+
+func TestReplaceMessage(t *testing.T) {
+	err := dm.ReplaceMessage(msgId, messageservice.Message{Content: "some other content"}, user)
+	if err != nil {
+		t.Fatal(err)
+	}
+	msgs, err := dm.GetMessages(user, user)
+	for _, msg := range msgs {
+		if msg.Id == msgId && msg.Content != "some other content" {
+			t.Fatalf("Message was not replaced (%s)", msg.Content)
+		}
+	}
+}
+
+func TestDeleteMessage(t *testing.T) {
+	err := dm.DeleteMessage(msgId, user)
+	if err != nil {
+		t.Fatal(err)
+	}
+	msgs, err := dm.GetMessages(receiverID, user)
+	for _, msg := range msgs {
+		if msg.Id == msgId {
+			t.Fatal("Message was not deleted")
+		}
+	}
 }

@@ -99,7 +99,7 @@ func (mr mongorepo) DeleteDirectMessage(messageID uuid.UUID) error {
 	var (
 		ctx = context.Background()
 	)
-	_, err := mr.DMCollection.DeleteOne(ctx, bson.M{"id": messageID})
+	_, err := mr.DMCollection.DeleteMany(ctx, bson.M{"id": messageID})
 	return err
 }
 
@@ -108,7 +108,7 @@ func (mr mongorepo) GetGroupMessages(groupID uuid.UUID) ([]groupmessageservice.M
 		messages []groupmessageservice.Message
 		ctx      = context.Background()
 	)
-	cursor, err := mr.GroupMessageCollection.Find(ctx, bson.M{"id": groupID})
+	cursor, err := mr.GroupMessageCollection.Find(ctx, bson.M{"groupid": groupID})
 	if err != nil {
 		return messages, err
 	}

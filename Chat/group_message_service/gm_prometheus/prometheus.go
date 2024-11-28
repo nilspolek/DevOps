@@ -55,14 +55,14 @@ func (s svc) GetMessages(groupID, authUser uuid.UUID) (msgs []groupmessageservic
 	return
 }
 
-func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) (err error) {
+func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) (id uuid.UUID, err error) {
 	defer func() {
 		if err != nil {
 			s.errorCounter.Inc()
 		}
 	}()
 	s.sendMessageCounter.Inc()
-	err = s.next.SendMessage(groupID, msg, authUser)
+	id, err = s.next.SendMessage(groupID, msg, authUser)
 	return
 }
 

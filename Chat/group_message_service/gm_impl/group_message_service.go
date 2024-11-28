@@ -1,6 +1,8 @@
 package gmimpl
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	groupmessageservice "github.com/nilspolek/DevOps/Chat/group_message_service"
 	"github.com/nilspolek/DevOps/Chat/repo"
@@ -18,8 +20,12 @@ func (s svc) GetMessages(groupID, authUser uuid.UUID) ([]groupmessageservice.Mes
 	return s.Repo.GetGroupMessages(groupID)
 }
 
-func (s svc) SendMessage(gid uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) error {
-	return s.Repo.SendMessageToGroup(msg.GroupId, msg)
+func (s svc) SendMessage(gid uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) (uuid.UUID, error) {
+	msg.Id = uuid.New()
+	msg.GroupId = gid
+	msg.Sender.Id = authUser
+	msg.Timestamp = time.Now()
+	return msg.Id, s.Repo.SendMessageToGroup(msg.GroupId, msg)
 }
 
 func (s svc) ReplaceMessage(messageID uuid.UUID, msg groupmessageservice.Message, authUser uuid.UUID) error {
