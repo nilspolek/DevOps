@@ -68,9 +68,9 @@ func main() {
 
 	// Enable logging if enabled
 	if isLogging {
-		dms = dmlog.New(&dms)
-		gms = gmlog.New(&gms)
-		gs = glog.New(&gs)
+		dms = dmlog.New(dms)
+		gms = gmlog.New(gms)
+		gs = glog.New(gs)
 	}
 
 	// Enable prometheus if enabled
@@ -79,15 +79,15 @@ func main() {
 	}
 	// Enable prometheus if enabled
 	if isPrometheus {
-		dms, err = dmprometheus.New(&dms, "direct_message_service")
+		dms, err = dmprometheus.New(dms, "direct_message_service")
 		if err != nil {
 			panic(err)
 		}
-		gms, err = gmprometheus.New(&gms, "group_message_service")
+		gms, err = gmprometheus.New(gms, "group_message_service")
 		if err != nil {
 			panic(err)
 		}
-		gs, err = gprometheus.New(&gs, "group_service")
+		gs, err = gprometheus.New(gs, "group_service")
 		if err != nil {
 			panic(err)
 		}

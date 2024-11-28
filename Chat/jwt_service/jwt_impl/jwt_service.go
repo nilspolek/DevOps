@@ -13,5 +13,5 @@ func New() jwtservice.JWTService {
 }
 
 func (s *svc) ValiadteToken(token string) (uuid.UUID, error) {
-	return uuid.New(), nil
+	return uuid.MustParse(token), nil
 }

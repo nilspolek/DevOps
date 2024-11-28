@@ -9,10 +9,10 @@ import (
 )
 
 type svc struct {
-	next *groupmessageservice.GroupMessageService
+	next groupmessageservice.GroupMessageService
 }
 
-func New(next *groupmessageservice.GroupMessageService) groupmessageservice.GroupMessageService {
+func New(next groupmessageservice.GroupMessageService) groupmessageservice.GroupMessageService {
 	svc := svc{
 		next: next,
 	}
@@ -26,7 +26,7 @@ func (s svc) GetMessages(groupID, authUser uuid.UUID) (msgs []groupmessageservic
 		}
 		goLog.Info("Get Group Message | took: %s | %v", time.Since(tm), msgs)
 	}(time.Now())
-	msgs, err = (*s.next).GetMessages(groupID, authUser)
+	msgs, err = s.next.GetMessages(groupID, authUser)
 	return
 }
 
@@ -37,7 +37,7 @@ func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message, aut
 		}
 		goLog.Info("Send Group Message | took: %s | %v", time.Since(tm), msg)
 	}(time.Now())
-	err = (*s.next).SendMessage(groupID, msg, authUser)
+	err = s.next.SendMessage(groupID, msg, authUser)
 	return
 }
 
@@ -48,7 +48,7 @@ func (s svc) ReplaceMessage(messageID uuid.UUID, msg groupmessageservice.Message
 		}
 		goLog.Info("Replace Group Message | took: %s | %v", time.Since(tm))
 	}(time.Now())
-	err = (*s.next).ReplaceMessage(messageID, msg, authUser)
+	err = s.next.ReplaceMessage(messageID, msg, authUser)
 	return
 }
 
@@ -59,6 +59,6 @@ func (s svc) DeleteMessage(messageID, authUser uuid.UUID) (err error) {
 		}
 		goLog.Info("Delete Group Message | took: %s | %v", time.Since(tm))
 	}(time.Now())
-	err = (*s.next).DeleteMessage(messageID, authUser)
+	err = s.next.DeleteMessage(messageID, authUser)
 	return
 }

@@ -30,7 +30,10 @@ func (rest *Rest) getDirectMessages(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(messages)
+	err = json.NewEncoder(w).Encode(messages)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+	}
 }
 
 // Swagger API Documentation

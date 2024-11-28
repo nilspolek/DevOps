@@ -7,7 +7,7 @@ import (
 )
 
 type svc struct {
-	next                  *groupmessageservice.GroupMessageService
+	next                  groupmessageservice.GroupMessageService
 	getMessageCounter     prometheus.Counter
 	sendMessageCounter    prometheus.Counter
 	replaceMessageCounter prometheus.Counter
@@ -15,7 +15,7 @@ type svc struct {
 	errorCounter          prometheus.Counter
 }
 
-func New(next *groupmessageservice.GroupMessageService, prefix string) (groupmessageservice.GroupMessageService, error) {
+func New(next groupmessageservice.GroupMessageService, prefix string) (groupmessageservice.GroupMessageService, error) {
 	svc := svc{
 		next:                  next,
 		getMessageCounter:     prometheus.NewCounter(prometheus.CounterOpts{Name: prefix + "_get_group_message_counter", Help: "Number of get messages calls"}),
@@ -51,7 +51,7 @@ func (s svc) GetMessages(groupID, authUser uuid.UUID) (msgs []groupmessageservic
 		}
 	}()
 	s.getMessageCounter.Inc()
-	msgs, err = (*s.next).GetMessages(groupID, authUser)
+	msgs, err = s.next.GetMessages(groupID, authUser)
 	return
 }
 
@@ -62,7 +62,7 @@ func (s svc) SendMessage(groupID uuid.UUID, msg groupmessageservice.Message, aut
 		}
 	}()
 	s.sendMessageCounter.Inc()
-	err = (*s.next).SendMessage(groupID, msg, authUser)
+	err = s.next.SendMessage(groupID, msg, authUser)
 	return
 }
 
@@ -73,7 +73,7 @@ func (s svc) ReplaceMessage(messageID uuid.UUID, msg groupmessageservice.Message
 		}
 	}()
 	s.replaceMessageCounter.Inc()
-	err = (*s.next).ReplaceMessage(messageID, msg, authUser)
+	err = s.next.ReplaceMessage(messageID, msg, authUser)
 	return
 }
 
@@ -84,6 +84,6 @@ func (s svc) DeleteMessage(messageID, authUser uuid.UUID) (err error) {
 		}
 	}()
 	s.deleteMessageCounter.Inc()
-	err = (*s.next).DeleteMessage(messageID, authUser)
+	err = s.next.DeleteMessage(messageID, authUser)
 	return
 }
